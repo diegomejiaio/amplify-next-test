@@ -8,6 +8,7 @@ import {
     NavigationMenuTrigger,
     NavigationMenuContent,
 } from "@/components/ui/navigation-menu";
+import { Separator } from "@/components/ui/separator"
 import {
     Menubar,
     MenubarCheckboxItem,
@@ -27,17 +28,16 @@ import {
 import Logo from '../../public/logo.svg';
 import Image from "next/image";
 import { ModeToggle } from "./ModeToggle";
-import { Autocomplete } from "@aws-amplify/ui-react";
-
+import { Button } from "@/components/ui/button"
 
 export default function Navbar() {
     return (
-        <header className="sticky top-0 z-50 w-full border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <header className="sticky top-0 z-50 w-full border-border/40 bg-background/20 backdrop-blur supports-[backdrop-filter]:bg-background/60">
             <div className="container flex h-14 max-w-screen-2xl items-center">
                 {/* Logo or Brand Name */}
                 <div className="mr-4 md:flex">
                     <div className="mr-2 md:flex items-center">
-                        <Image src={Logo} alt="Tivit" height={25}/>
+                        <Image src={Logo} priority={true} alt="Tivit" height={25}/>
                         <p className="text-center">Digital Latam</p>
                     </div>
                 </div>
@@ -136,17 +136,9 @@ export default function Navbar() {
                     </div> 
                 </div>
                 {/* Menubar */}
-                <Menubar className="ml-auto">
-                    <MenubarMenu>
-                        <MenubarTrigger className="text-sm">Account</MenubarTrigger>
-                        <MenubarContent>
-                            <MenubarItem onClick={() => alert("Profile clicked")}>Profile</MenubarItem>
-                            <MenubarItem onClick={() => alert("Settings clicked")}>Settings</MenubarItem>
-                            <MenubarItem onClick={() => alert("Logout clicked")}>Logout</MenubarItem>
-                        </MenubarContent>
-                    </MenubarMenu>
-                </Menubar>
+                <Button variant="ghost">Iniciar Sesión</Button>
                 </div>
+        <Separator />
         </header>
     );
 }
