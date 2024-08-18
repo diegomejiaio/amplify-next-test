@@ -2,9 +2,12 @@
 
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
+import { useTheme } from "next-themes";
 
 const SpaceBackground = () => {
     const mountRef = useRef<HTMLDivElement | null>(null);
+    const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
+    const { resolvedTheme } = useTheme();
 
     useEffect(() => {
         // Configuración básica de Three.js
@@ -13,9 +16,11 @@ const SpaceBackground = () => {
         camera.position.z = 1;
         camera.rotation.x = Math.PI / 2;
 
-        const renderer = new THREE.WebGLRenderer();
+        const renderer = new THREE.WebGLRenderer({ alpha: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setClearColor(0x000000, 0); // Set background to transparent
         mountRef.current?.appendChild(renderer.domElement);
+        rendererRef.current = renderer;
 
         // Creación de las partículas de estrellas usando BufferGeometry
         const starGeo = new THREE.BufferGeometry();
@@ -35,6 +40,9 @@ const SpaceBackground = () => {
             color: 0xaaaaaa,
             size: 0.7,
             map: sprite,
+            transparent: true,
+            alphaTest: 0.5,
+            depthTest: false
         });
 
         const stars = new THREE.Points(starGeo, starMaterial);
@@ -57,10 +65,15 @@ const SpaceBackground = () => {
 
         animate();
 
+        // Cleanup function
         return () => {
-            mountRef.current?.removeChild(renderer.domElement);
+            if (rendererRef.current) {
+                mountRef.current?.removeChild(rendererRef.current.domElement);
+                rendererRef.current.dispose();
+                rendererRef.current = null;
+            }
         };
-    }, []);
+    }, []); // Empty dependency array to run only once
 
     return <div ref={mountRef} style={{ height: '100%', width: '100vw' }} />;
 };
