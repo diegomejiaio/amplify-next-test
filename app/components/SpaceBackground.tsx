@@ -10,7 +10,6 @@ const SpaceBackground = () => {
     const { resolvedTheme } = useTheme();
 
     useEffect(() => {
-        // Configuración básica de Three.js
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 1000);
         camera.position.z = 1;
@@ -18,11 +17,20 @@ const SpaceBackground = () => {
 
         const renderer = new THREE.WebGLRenderer({ alpha: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setClearColor(0x000000, 0); // Set background to transparent
+        renderer.setClearColor(0x000000, 0);
         mountRef.current?.appendChild(renderer.domElement);
         rendererRef.current = renderer;
 
-        // Creación de las partículas de estrellas usando BufferGeometry
+        const handleResize = () => {
+            if (rendererRef.current) {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                rendererRef.current.setSize(window.innerWidth, window.innerHeight);
+            }
+        };
+
+        window.addEventListener('resize', handleResize);
+
         const starGeo = new THREE.BufferGeometry();
         const starVertices = [];
 
@@ -38,21 +46,19 @@ const SpaceBackground = () => {
         const sprite = new THREE.TextureLoader().load('/star.png');
         const starMaterial = new THREE.PointsMaterial({
             color: 0xaaaaaa,
-            size: 0.7,
+            size: 0.4,
             map: sprite,
             transparent: true,
             alphaTest: 0.5,
-            depthTest: false
         });
 
         const stars = new THREE.Points(starGeo, starMaterial);
         scene.add(stars);
 
-        // Animación de las estrellas
         const animate = () => {
             const positions = starGeo.attributes.position.array;
             for (let i = 0; i < positions.length; i += 3) {
-                positions[i + 1] -= 2;  // Modificar la posición en el eje Y
+                positions[i + 1] -= 2;
                 if (positions[i + 1] < -200) {
                     positions[i + 1] = 200;
                 }
@@ -65,15 +71,15 @@ const SpaceBackground = () => {
 
         animate();
 
-        // Cleanup function
         return () => {
             if (rendererRef.current) {
                 mountRef.current?.removeChild(rendererRef.current.domElement);
                 rendererRef.current.dispose();
                 rendererRef.current = null;
             }
+            window.removeEventListener('resize', handleResize);
         };
-    }, []); // Empty dependency array to run only once
+    }, []);
 
     return <div ref={mountRef} style={{ height: '100%', width: '100vw' }} />;
 };
