@@ -1,6 +1,6 @@
 import React from 'react';
 import SpaceBackground from '../components/SpaceBackground';
-import Navbar from '../components/Navbar';
+import Navbar from '../components/NavbarInternal';
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     return (

@@ -33,7 +33,7 @@ const LoginForm = () => {
                     </div>
                 </CardContent>
                 <CardFooter>
-                    <Button variant={"default"} className="w-full">Ingresar</Button>
+                    <Button variant={"default"} className="w-full"><a href="/home">Iniciar sesión</a></Button>
                 </CardFooter>
             </Card>
             <div className="text-center mt-4"></div>

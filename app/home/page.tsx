@@ -1,6 +1,11 @@
 import Image from "next/image"
 import Link from "next/link"
 import BrandLogoLink from "../components/BrandLogoLink"
+
+import { Applications, columns } from "./columns"
+import { DataTable } from "./data-table"
+
+
 import {
     File,
     Home,
@@ -15,6 +20,7 @@ import {
     Settings,
     ShoppingCart,
     Users2,
+    Boxes,
 } from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"
@@ -68,119 +74,90 @@ import {
 } from "@/components/ui/tooltip"
 import LateralNavbar from "../components/LateralNavbar"
 import { ModeToggle } from "../components/ModeToggle"
+import NavbarInternal from "../components/NavbarInternal"
 
-const HomePage = () => {
+async function getData(): Promise<Applications[]> {
+    // Fetch data from your API here.
+    return [
+        {
+            id: "1",
+            name: "Laser Lemonade Machine",
+            status: "running",
+            repository: "www.google.com",
+            public_url: "www.google.com",
+            version: "1.0.0",
+            cloud: "aws",
+        },
+        {
+            id: "2",
+            name: "Hypernova Headphones",
+            status: "launching",
+            repository: "google.com",
+            public_url: "google.com",
+            version: "1.0.0",
+            cloud: "aws",
+        },
+        {
+            id: "3",
+            name: "AeroGlow Desk Lamp",
+            status: "running",
+            repository: "google.com",
+            public_url: "google.com",
+            version: "1.0.0",
+            cloud: "gcp",
+        },
+        {
+            id: "4",
+            name: "TechTonic Energy Drink",
+            status: "down",
+            repository: "google.com",
+            public_url: "google.com",
+            version: "1.0.0",
+            cloud: "aws",
+        },
+        {
+            id: "5",
+            name: "Gamer Gear Pro Controller",
+            status: "down",
+            repository: "google.com",
+            public_url: "google.com",
+            version: "1.0.0",
+            cloud: "gcp",
+        },
+        {
+            id: "6",
+            name: "Luminous VR Headset",
+            status: "down",
+            repository: "google.com",
+            public_url: "google.com",
+            version: "1.0.0",
+            cloud: "aws",
+        }
+    ]
+}
+
+export default async function HomePage () {
+    const data = await getData()
     return (
         <div className="flex min-h-screen w-full flex-col bg-muted/40">
             <LateralNavbar/>
             <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
-                <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
-                    <Sheet>
-                        <SheetTrigger asChild>
-                            <Button size="icon" variant="outline" className="sm:hidden">
-                                <PanelLeft className="h-5 w-5" />
-                                <span className="sr-only">Toggle Menu</span>
-                            </Button>
-                        </SheetTrigger>
-                        <SheetContent side="left" className="sm:max-w-xs">
-                            <nav className="grid gap-6 text-lg font-medium">
-                                <Link
-                                    href="#"
-                                    className="group flex h-10 w-10 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:text-base"
-                                >
-                                    <Package2 className="h-5 w-5 transition-all group-hover:scale-110" />
-                                    <span className="sr-only">Acme Inc</span>
-                                </Link>
-                                <Link
-                                    href="#"
-                                    className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
-                                >
-                                    <Home className="h-5 w-5" />
-                                    Dashboard
-                                </Link>
-                                <Link
-                                    href="#"
-                                    className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
-                                >
-                                    <ShoppingCart className="h-5 w-5" />
-                                    Orders
-                                </Link>
-                                <Link
-                                    href="#"
-                                    className="flex items-center gap-4 px-2.5 text-foreground"
-                                >
-                                    <Package className="h-5 w-5" />
-                                    Products
-                                </Link>
-                                <Link
-                                    href="#"
-                                    className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
-                                >
-                                    <Users2 className="h-5 w-5" />
-                                    Customers
-                                </Link>
-                                <Link
-                                    href="#"
-                                    className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
-                                >
-                                    <LineChart className="h-5 w-5" />
-                                    Settings
-                                </Link>
-                            </nav>
-                        </SheetContent>
-                    </Sheet>
-                    <Breadcrumb className="hidden md:flex">
-                        <BreadcrumbList>
-                            <BreadcrumbItem>
-                                <BreadcrumbPage>Home</BreadcrumbPage>
-                            </BreadcrumbItem>
-                        </BreadcrumbList>
-                    </Breadcrumb>
-                    
-                    <div className="relative ml-auto flex-1 md:grow-0">
-                        <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                        <Input
-                            type="search"
-                            placeholder="Search..."
-                            className="w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[320px]"
-                        />
-                    </div>
-                    <ModeToggle />
-                    <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                            <Button
-                                variant="outline"
-                                size="icon"
-                                className="overflow-hidden rounded-full"
-                            >
-                                <Image
-                                    src="/avatar.png"
-                                    width={36}
-                                    height={36}
-                                    alt="Avatar"
-                                    className="overflow-hidden rounded-full"
-                                />
-                            </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                            <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem>Settings</DropdownMenuItem>
-                            <DropdownMenuItem>Support</DropdownMenuItem>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem>Logout</DropdownMenuItem>
-                        </DropdownMenuContent>
-                    </DropdownMenu>
-                </header>
+                <NavbarInternal/>
                 <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
                     <Tabs defaultValue="all">
                         <div className="flex items-center">
                             <TabsList>
-                                <TabsTrigger value="all">All</TabsTrigger>
-                                <TabsTrigger value="active">Active</TabsTrigger>
-                                <TabsTrigger value="draft">Draft</TabsTrigger>
+                                <TabsTrigger value="all">
+                                    Todos
+                                </TabsTrigger>
+                                <TabsTrigger value="active">
+                                    Activos
+                                </TabsTrigger>
+                                <TabsTrigger value="draft">
+                                    Draft
+                                </TabsTrigger>
                                 <TabsTrigger value="archived" className="hidden sm:flex">
-                                    Archived
+                                    Archivados
                                 </TabsTrigger>
                             </TabsList>
                             <div className="ml-auto flex items-center gap-2">
@@ -222,20 +199,21 @@ const HomePage = () => {
                         <TabsContent value="all">
                             <Card x-chunk="dashboard-06-chunk-0" className="border-input">
                                 <CardHeader>
-                                    <CardTitle>Products</CardTitle>
+                                    <CardTitle>Aplicaciones</CardTitle>
                                     <CardDescription>
-                                        Manage your products and view their sales performance.
+                                        Lista de aplicaciones demo de Tivit Digital Latam.
                                     </CardDescription>
                                 </CardHeader>
                                 <CardContent>
-                                    <Table>
+                                    <DataTable columns={columns} data={data} />
+                                    {/* <Table>
                                         <TableHeader>
                                             <TableRow>
                                                 <TableHead className="hidden w-[100px] sm:table-cell">
                                                     <span className="sr-only">Image</span>
                                                 </TableHead>
-                                                <TableHead>Name</TableHead>
-                                                <TableHead>Status</TableHead>
+                                                <TableHead>Nombre</TableHead>
+                                                <TableHead>Estado</TableHead>
                                                 <TableHead>Price</TableHead>
                                                 <TableHead className="hidden md:table-cell">
                                                     Total Sales
@@ -251,13 +229,7 @@ const HomePage = () => {
                                         <TableBody>
                                             <TableRow>
                                                 <TableCell className="hidden sm:table-cell">
-                                                    <Image
-                                                        alt="Product image"
-                                                        className="aspect-square rounded-md object-cover"
-                                                        height="64"
-                                                        src="/placeholder.svg"
-                                                        width="64"
-                                                    />
+                                                    <Boxes />
                                                 </TableCell>
                                                 <TableCell className="font-medium">
                                                     Laser Lemonade Machine
@@ -294,13 +266,7 @@ const HomePage = () => {
                                             </TableRow>
                                             <TableRow>
                                                 <TableCell className="hidden sm:table-cell">
-                                                    <Image
-                                                        alt="Product image"
-                                                        className="aspect-square rounded-md object-cover"
-                                                        height="64"
-                                                        src="/placeholder.svg"
-                                                        width="64"
-                                                    />
+                                                    <Boxes />
                                                 </TableCell>
                                                 <TableCell className="font-medium">
                                                     Hypernova Headphones
@@ -337,13 +303,7 @@ const HomePage = () => {
                                             </TableRow>
                                             <TableRow>
                                                 <TableCell className="hidden sm:table-cell">
-                                                    <Image
-                                                        alt="Product image"
-                                                        className="aspect-square rounded-md object-cover"
-                                                        height="64"
-                                                        src="/placeholder.svg"
-                                                        width="64"
-                                                    />
+                                                    <Boxes />
                                                 </TableCell>
                                                 <TableCell className="font-medium">
                                                     AeroGlow Desk Lamp
@@ -380,13 +340,7 @@ const HomePage = () => {
                                             </TableRow>
                                             <TableRow>
                                                 <TableCell className="hidden sm:table-cell">
-                                                    <Image
-                                                        alt="Product image"
-                                                        className="aspect-square rounded-md object-cover"
-                                                        height="64"
-                                                        src="/placeholder.svg"
-                                                        width="64"
-                                                    />
+                                                    <Boxes/>
                                                 </TableCell>
                                                 <TableCell className="font-medium">
                                                     TechTonic Energy Drink
@@ -423,13 +377,7 @@ const HomePage = () => {
                                             </TableRow>
                                             <TableRow>
                                                 <TableCell className="hidden sm:table-cell">
-                                                    <Image
-                                                        alt="Product image"
-                                                        className="aspect-square rounded-md object-cover"
-                                                        height="64"
-                                                        src="/placeholder.svg"
-                                                        width="64"
-                                                    />
+                                                    <Boxes/>
                                                 </TableCell>
                                                 <TableCell className="font-medium">
                                                     Gamer Gear Pro Controller
@@ -466,13 +414,7 @@ const HomePage = () => {
                                             </TableRow>
                                             <TableRow>
                                                 <TableCell className="hidden sm:table-cell">
-                                                    <Image
-                                                        alt="Product image"
-                                                        className="aspect-square rounded-md object-cover"
-                                                        height="64"
-                                                        src="/placeholder.svg"
-                                                        width="64"
-                                                    />
+                                                    <Boxes/>
                                                 </TableCell>
                                                 <TableCell className="font-medium">
                                                     Luminous VR Headset
@@ -508,12 +450,12 @@ const HomePage = () => {
                                                 </TableCell>
                                             </TableRow>
                                         </TableBody>
-                                    </Table>
+                                    </Table> */}
                                 </CardContent>
                                 <CardFooter>
                                     <div className="text-xs text-muted-foreground">
-                                        Showing <strong>1-10</strong> of <strong>32</strong>{" "}
-                                        products
+                                        Mostrando <strong>1-6</strong> de <strong>24</strong>{" "}
+                                        items
                                     </div>
                                 </CardFooter>
                             </Card>
@@ -524,5 +466,3 @@ const HomePage = () => {
         </div>
     )
 }
-
-export default HomePage;
