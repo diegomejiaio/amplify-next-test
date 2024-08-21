@@ -1,6 +1,7 @@
 "use client";
 
 import { Separator } from "@/components/ui/separator"
+import Link from 'next/link';
 
 import Logo from '../../public/logo.svg';
 import Image from "next/image";
@@ -15,10 +16,10 @@ export default function NavbarPublic() {
             <div className="container flex h-14 max-w-screen-2xl items-center">
                 {/* Logo or Brand Name */}
                 <div className="mr-4 md:flex">
-                    <a className="mr-2 md:flex items-center" href="./">
+                    <Link className="mr-2 md:flex items-center" href="./">
                         <Image src={Logo} priority={true} alt="Tivit" height={25}/>
                         <p className="text-center text-s">Digital Latam</p>
-                    </a>
+                    </Link>
                 </div>
                 {/* Navigation Menu */}
                 <div className="ml-auto flex">
@@ -31,7 +32,7 @@ export default function NavbarPublic() {
                 {/* Menubar */}
                 <div className="ml-8"></div>
                 <Button variant={"ghost"} asChild>
-                    <a href="/login">Iniciar sesión</a>
+                    <Link href="/login">Iniciar sesión</Link>
                 </Button>
                 </div>
         <Separator />
