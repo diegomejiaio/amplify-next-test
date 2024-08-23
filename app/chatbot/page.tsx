@@ -1,5 +1,3 @@
-"use client";
-
 import { Applications, columns } from "./columns"
 import { DataTable } from "./data-table"
 
@@ -70,8 +68,8 @@ import {
     TooltipTrigger,
     TooltipProvider,
 } from "@/components/ui/tooltip"
-import LateralNavbar from "../../components/LateralNavbar"
-import NavbarInternal from "../../components/NavbarInternal"
+import LateralNavbar from "@/components/LateralNavbar"
+import NavbarInternal from "@/components/NavbarInternal"
 
 async function getData(): Promise<Applications[]> {
     // Fetch data from your API here.
@@ -133,7 +131,8 @@ async function getData(): Promise<Applications[]> {
     ]
 }
 
-export default async function HomePage () {
+
+export default async function Chatbot () {
     const data = await getData()
     return (
         <div className="flex min-h-screen w-full flex-col bg-muted/40">

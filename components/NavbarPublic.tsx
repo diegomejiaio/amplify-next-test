@@ -3,7 +3,7 @@
 import { Separator } from "@/components/ui/separator"
 import Link from 'next/link';
 
-import Logo from '../../public/logo.svg';
+import Logo from '@/public/logo.svg'
 import Image from "next/image";
 import { ModeToggle } from "./ModeToggle";
 import { Button } from "@/components/ui/button"
@@ -32,7 +32,7 @@ export default function NavbarPublic() {
                 {/* Menubar */}
                 <div className="ml-8"></div>
                 <Button variant={"ghost"} asChild>
-                    <Link href="/login">Iniciar sesión</Link>
+                    <Link href="/auth">Iniciar sesión</Link>
                 </Button>
                 </div>
         <Separator />
