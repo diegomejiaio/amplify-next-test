@@ -8,7 +8,7 @@ import '@aws-amplify/ui-react/styles.css'
 const Signup = ({user}: {user?: AuthUser}) => {
     useEffect(() => {
         if(user) {
-            redirect('/')
+            redirect('/app/home')
         }
     })
     return null
