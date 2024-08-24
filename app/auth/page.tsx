@@ -8,11 +8,15 @@ import SpaceBackground from '../../components/SpaceBackground';
 import Signup from '../../components/Signup';
 import { Skeleton } from "@/components/ui/skeleton"
 import { Amplify } from 'aws-amplify';
+import outputs from "../../amplify_outputs.json";
+import Login from '@/components/Login';
 
 
 // Set language and configure Amplify
 I18n.putVocabularies(translations);
 I18n.setLanguage('es');
+Amplify.configure(outputs);
+
 
 const LoginForm = () => {
     return (
@@ -21,8 +25,10 @@ const LoginForm = () => {
             <main className="relative w-full min-h-[calc(100vh-57px)] flex items-center justify-center">
                 <section className="absolute inset-0" style={{ marginTop: "-60px" }}>
                     <SpaceBackground />
+                    {/* <Login/> */}
                     <Suspense fallback={<Skeleton className="w-[480px] h-[420px] rounded-full" />}>
                         <Signup />
+                        
                     </Suspense>
                     
                 </section>
