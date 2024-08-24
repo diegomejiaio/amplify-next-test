@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Input } from "./ui/input";
 import { useEffect, useState } from "react";
-import { redirect } from "next/navigation"; // Import the redirect function
+import { useRouter } from 'next/navigation';
 
 Amplify.configure(outputs);
 
@@ -21,50 +21,30 @@ interface SignInForm extends HTMLFormElement {
     readonly elements: SignInFormElements;
 }
 
-
 export default function Login() {
-    const [isMounted, setIsMounted] = useState(false);
-
-    useEffect(() => {
-        const checkUser = async () => {
-            try {
-                const user = await getCurrentUser();
-                if (user) {
-                    // User is already authenticated, redirect to /app/home
-                    redirect('/app/home');
-                } else {
-                    setIsMounted(true); // Allow the page to render if no user is authenticated
-                }
-            } catch (error) {
-                setIsMounted(true); // If there's an error (e.g., no user), allow the page to render
-            }
-        };
-        checkUser();
-    }, []);
+    const router = useRouter()
 
     async function handleSubmit(event: FormEvent<SignInForm>) {
         event.preventDefault();
         const form = event.currentTarget;
-
         try {
-            await signIn({
+            const signInResponse = await signIn({
                 username: form.elements.email.value,
                 password: form.elements.password.value,
             });
-            redirect('/app/home');
+            console.log('Signed in', signInResponse.nextStep.signInStep );
+            if (signInResponse.nextStep.signInStep === 'DONE') {
+                router.push('/app/home');
+            }
             
         } catch (error) {
             const user = await getCurrentUser();
             if (user) {
-                redirect('/app/home');
+                router.push('/app/home');
             } else {
-                console.error('Error signing in', error);
+                console.error('Error signing in 2', error);
             }            
         }
-    }
-
-    if (!isMounted) {
-        return null; // Don't render anything until we've checked the authentication status
     }
 
     return (

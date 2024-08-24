@@ -25,11 +25,11 @@ const LoginForm = () => {
             <main className="relative w-full min-h-[calc(100vh-57px)] flex items-center justify-center">
                 <section className="absolute inset-0" style={{ marginTop: "-60px" }}>
                     <SpaceBackground />
-                    {/* <Login/> */}
-                    <Suspense fallback={<Skeleton className="w-[480px] h-[420px] rounded-full" />}>
+                    <Login/>
+                    {/* <Suspense fallback={<Skeleton className="w-[480px] h-[420px] rounded-full" />}>
                         <Signup />
                         
-                    </Suspense>
+                    </Suspense> */}
                     
                 </section>
             </main>
