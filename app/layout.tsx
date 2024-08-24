@@ -1,9 +1,9 @@
 import './globals.css';
 import type { Metadata } from "next";
 import { Titillium_Web as FontSans } from "next/font/google";
-import "./app.css";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/theme-provider"
+import ConfigureAmplify from '@/utils/configureAmplify';
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -25,6 +25,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         fontSans.variable
       )}
       >
+        <ConfigureAmplify />
         <ThemeProvider
             attribute="class"
             defaultTheme="dark"

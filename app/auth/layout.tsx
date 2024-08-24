@@ -1,6 +1,4 @@
 import React from 'react';
-import SpaceBackground from '../components/SpaceBackground';
-import NavbarPublic from '../components/NavbarPublic';
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     return (
