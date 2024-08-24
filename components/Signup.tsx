@@ -1,18 +1,16 @@
-"use client"
-import { redirect } from "next/navigation";
-import { useEffect } from "react";
-import { AuthUser } from "aws-amplify/auth";
-import { withAuthenticator } from "@aws-amplify/ui-react";
+'use client'
+import { withAuthenticator } from "@aws-amplify/ui-react"
+import { AuthUser } from "aws-amplify/auth"
+import { redirect } from "next/navigation"
+import { useEffect } from "react"
+import '@aws-amplify/ui-react/styles.css'
 
-const Signup = ({user}:{user?:AuthUser}) => {
+const Signup = ({user}: {user?: AuthUser}) => {
     useEffect(() => {
-        if (user) {
-            // If user is authenticated, perform client-side redirect
-            redirect('/home');
+        if(user) {
+            redirect('/')
         }
-    }
-    ,);
-    return null;
+    })
+    return null
 }
-
-export default withAuthenticator(Signup);
+export default withAuthenticator(Signup)

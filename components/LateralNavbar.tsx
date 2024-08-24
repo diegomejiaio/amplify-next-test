@@ -32,32 +32,32 @@ const OptionsList: NavItemProps[] = [
     {
         name: "Home",
         icon: Home,
-        url: "/home",
+        url: "/app/home",
     },
     {
         name: "Aplicaciones",
         icon: Package,
-        url: "/apps",
+        url: "/app/applications",
     },
     {
         name: "Chatbot",
         icon: BotMessageSquare,
-        url: "/chatbot",
+        url: "/app/chatbot",
     },
     {
         name: "Personas",
         icon: Users2,
-        url: "/people",
+        url: "/app/people",
     },
     {
         name: "Analytics",
         icon: LineChart,
-        url: "/analytics",
+        url: "/app/analytics",
     },
     {
         name: "Recursos",
         icon: FolderSearch,
-        url: "/resources",
+        url: "/app/resources",
     },
 ];
 

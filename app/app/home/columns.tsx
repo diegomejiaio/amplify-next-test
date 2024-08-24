@@ -31,7 +31,7 @@ export const columns: ColumnDef<Applications>[] = [
             if (status === "running") return <Badge variant="outline" className="text-green-500 border-input">{formatted}</Badge>
             if (status === "launching") return <Badge variant="outline" className="text-yellow-500 border-input">{formatted}</Badge>
             if (status === "stopping") return <Badge variant="outline" className="text-blue-500 border-input">{formatted}</Badge>
-            if (status === "down") return <Badge variant="outline" className="text-gray-400 border-input">{formatted}</Badge>
+            if (status === "down") return <Badge variant="outline" className="text-red-500 border-input">{formatted}</Badge>
             return <Badge variant="outline">{formatted}</Badge>
         },
 
