@@ -9,12 +9,12 @@ export const auth = defineAuth({
   loginWith: {
     email: {
       verificationEmailStyle: "CODE",
-      verificationEmailSubject: "Welcome to my app!",
-      verificationEmailBody: (createCode) => `Use this code to confirm your account: ${createCode()}`,
+      verificationEmailSubject: "Digital Apps Tivit Latam - Verifica tu correo", 
+      verificationEmailBody: (createCode) => `Usa este código para verificar tu cuenta: ${createCode()}`,
       userInvitation: {
-        emailSubject: "Welcome to my app!",
-        emailBody: (user, code) =>
-          `We're happy to have you! You can now login with username ${user()} and temporary password ${code()}`,
+        emailSubject: "Digital Apps Tivit Latam - Verifica tu correo",
+        emailBody: ( code ) =>
+          `Bienvenid@ al equpo! Usa este código temporal para iniciar ${code()} en la aplicación.`,
       },
     },
   },

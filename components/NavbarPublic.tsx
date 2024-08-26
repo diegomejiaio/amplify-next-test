@@ -15,9 +15,9 @@ export default function NavbarPublic() {
         <header className="sticky top-0 z-50 w-full border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
             <div className="container flex h-14 max-w-screen-2xl items-center">
                 {/* Logo or Brand Name */}
-                <div className="mr-4 md:flex">
+                <div className="mr-4 md:flex max-h-8">
                     <Link className="mr-2 md:flex items-center" href="./">
-                        <Image src={Logo} priority={true} alt="Tivit" height={25}/>
+                        <Image src={Logo} priority={true} alt="Tivit" height={15}/>
                         <p className="text-center text-s">Digital Latam</p>
                     </Link>
                 </div>
