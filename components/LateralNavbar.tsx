@@ -1,10 +1,6 @@
-/* LateralNavbar.tsx */
 "use client";
 
 import React from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import BrandLogoLink from "./BrandLogoLink";
 import {
     Tooltip,
     TooltipContent,
@@ -13,70 +9,47 @@ import {
 } from "@/components/ui/tooltip";
 import {
     Home,
-    ShoppingCart,
     Package,
+    BotMessageSquare,
     Users2,
     LineChart,
-    Settings,
     FolderSearch,
-    BotMessageSquare,
+    Settings,
 } from "lucide-react";
+import BrandLogoLink from "./BrandLogoLink";
 
 interface NavItemProps {
     name: string;
-    url: string;
     icon: React.ComponentType<{ className?: string }>;
+    activeItem: string;
+    setActiveItem: (name: string) => void;
 }
 
-const OptionsList: NavItemProps[] = [
-    {
-        name: "Home",
-        icon: Home,
-        url: "/app/home",
-    },
-    {
-        name: "Aplicaciones",
-        icon: Package,
-        url: "/app/applications",
-    },
-    {
-        name: "Chatbot",
-        icon: BotMessageSquare,
-        url: "/app/chatbot",
-    },
-    {
-        name: "Personas",
-        icon: Users2,
-        url: "/app/people",
-    },
-    {
-        name: "Analytics",
-        icon: LineChart,
-        url: "/app/analytics",
-    },
-    {
-        name: "Recursos",
-        icon: FolderSearch,
-        url: "/app/resources",
-    },
+const OptionsList = [
+    { name: "Home", icon: Home },
+    { name: "Demos", icon: Package },
+    { name: "Chatbot", icon: BotMessageSquare },
+    { name: "Personas", icon: Users2 },
+    { name: "Analytics", icon: LineChart },
+    { name: "Recursos", icon: FolderSearch },
 ];
 
-const SettingsItem: NavItemProps = {
-    name: "Settings",
-    icon: Settings,
-    url: "/settings",
-};
+const SettingsItem = { name: "Settings", icon: Settings };
 
-const NavItem: React.FC<NavItemProps> = ({ name, url, icon: Icon }) => {
-    const pathname = usePathname();
-    const isActive = pathname === url;
+const NavItem: React.FC<NavItemProps> = ({
+    name,
+    icon: Icon,
+    activeItem,
+    setActiveItem,
+}) => {
+    const isActive = activeItem === name;
 
     return (
         <Tooltip>
             <TooltipTrigger asChild>
-                <Link
-                    href={url}
-                    className={`flex h-9 w-9 items-center justify-center rounded-lg transition-colors md:h-8 md:w-8 ${
+                <button
+                    onClick={() => setActiveItem(name)}
+                    className={`flex items-center justify-center rounded-lg transition-colors h-8 w-8 ${
                         isActive
                             ? "bg-accent text-foreground"
                             : "text-muted-foreground hover:text-foreground"
@@ -84,27 +57,41 @@ const NavItem: React.FC<NavItemProps> = ({ name, url, icon: Icon }) => {
                 >
                     <Icon className="h-5 w-5" />
                     <span className="sr-only">{name}</span>
-                </Link>
+                </button>
             </TooltipTrigger>
             <TooltipContent side="right">{name}</TooltipContent>
         </Tooltip>
     );
 };
 
-const LateralNavbar: React.FC = () => {
+interface LateralNavbarProps {
+    activeItem: string;
+    setActiveItem: (name: string) => void;
+}
+
+const LateralNavbar: React.FC<LateralNavbarProps> = ({ activeItem, setActiveItem }) => {
     return (
-        <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex border-input">
+        <aside className="fixed inset-y-0 left-0 z-10 w-12 sm:w-14 flex-col border-r bg-background flex border-input">
             <nav className="flex flex-col items-center gap-4 px-2 py-4">
                 <BrandLogoLink />
                 <TooltipProvider>
                     {OptionsList.map((option) => (
-                        <NavItem key={option.name} {...option} />
+                        <NavItem
+                            key={option.name}
+                            activeItem={activeItem}
+                            setActiveItem={setActiveItem}
+                            {...option}
+                        />
                     ))}
                 </TooltipProvider>
             </nav>
             <nav className="mt-auto flex flex-col items-center gap-4 px-2 py-4">
                 <TooltipProvider>
-                    <NavItem {...SettingsItem} />
+                    <NavItem
+                        activeItem={activeItem}
+                        setActiveItem={setActiveItem}
+                        {...SettingsItem}
+                    />
                 </TooltipProvider>
             </nav>
         </aside>

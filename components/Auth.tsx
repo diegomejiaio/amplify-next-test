@@ -12,7 +12,7 @@ const Login = () => {
         redirect(origin);
     }
     else {
-        redirect("/app/home");
+        redirect("/app");
     }
     return null
 }

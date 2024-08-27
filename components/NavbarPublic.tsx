@@ -18,19 +18,19 @@ export default function NavbarPublic() {
                 <div className="mr-4 md:flex max-h-8">
                     <Link className="mr-2 md:flex items-center" href="./">
                         <Image src={Logo} priority={true} alt="Tivit" height={15}/>
-                        <p className="text-center text-s">Digital Latam</p>
+                        <p className="text-center text-s md:ml-[10px]">Digital Latam</p>
                     </Link>
                 </div>
                 {/* Navigation Menu */}
                 <div className="ml-auto flex">
                     
                     {/* Darkmode Toggle */}
-                    <div className="ml-4">
+                    <div className="md:ml-4">
                         <ModeToggle />    
                     </div> 
                 </div>
                 {/* Menubar */}
-                <div className="ml-8"></div>
+                <div className="md:ml-8"></div>
                 <Button variant={"ghost"} asChild>
                     <Link href="/auth">Iniciar sesión</Link>
                 </Button>
