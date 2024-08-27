@@ -6,21 +6,44 @@ import { Amplify } from "aws-amplify";
 import SpaceBackground from "../components/SpaceBackground";
 import NavbarPublic from "../components/NavbarPublic";
 import { TypeAnimation } from 'react-type-animation';
-import { ReloadIcon } from "@radix-ui/react-icons"
-import { Authenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
-//import outputs from "@/amplify_outputs.json";
+import outputs from "@/amplify_outputs.json";
+import { getCurrentUser } from 'aws-amplify/auth';
 
-//Amplify.configure(outputs);
+
+Amplify.configure(outputs);
 
 const client = generateClient<Schema>();
 
-export default function App() {
 
+
+export default function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const signedUser = await getCurrentUser();
+        if (signedUser) {
+          setIsAuthenticated(true);
+        } else {
+          setIsAuthenticated(false);
+        }
+      } catch (error) {
+        if ((error as Error).name === 'UserUnAuthenticatedException') {
+          setIsAuthenticated(false);
+        } else {
+          console.error('Error fetching user:', error);
+        }
+      }
+    };
+    fetchUser();
+  }, []);
+    
 
   return (
     <>
-      <NavbarPublic />
+      <NavbarPublic isAuthenticated={isAuthenticated} />
       <main className="relative w-full min-h-[calc(100vh-57px)] flex items-center justify-center">
         <section className="absolute inset-0" style={{ marginTop: "-60px" }}>
           <SpaceBackground />

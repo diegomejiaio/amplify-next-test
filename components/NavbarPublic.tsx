@@ -2,6 +2,7 @@
 
 import { Separator } from "@/components/ui/separator"
 import Link from 'next/link';
+import { GetAuthCurrentUser } from "@/utils/utils";
 
 import Logo from '@/public/logo.svg'
 import Image from "next/image";
@@ -9,8 +10,11 @@ import { ModeToggle } from "./ModeToggle";
 import { Button } from "@/components/ui/button"
 import { buttonVariants } from "@/components/ui/button"
 
+interface NavbarPublicProps {
+    isAuthenticated: boolean;
+}
 
-export default function NavbarPublic() {
+export default function NavbarPublic({ isAuthenticated }: NavbarPublicProps) {
     return (
         <header className="sticky top-0 z-50 w-full border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
             <div className="container flex h-14 max-w-screen-2xl items-center">
@@ -32,7 +36,11 @@ export default function NavbarPublic() {
                 {/* Menubar */}
                 <div className="md:ml-8"></div>
                 <Button variant={"ghost"} asChild>
-                    <Link href="/auth">Iniciar sesión</Link>
+                    {isAuthenticated ? (
+                        <Link href="/app">Ir a la app</Link>
+                    ) : (
+                        <Link href="/auth">Iniciar sesión</Link>
+                    )}
                 </Button>
                 </div>
         <Separator />

@@ -27,9 +27,9 @@ interface NavItemProps {
 
 const OptionsList = [
     { name: "Home", icon: Home },
-    { name: "Demos", icon: Package },
     { name: "Chatbot", icon: BotMessageSquare },
-    { name: "Personas", icon: Users2 },
+    { name: "Demos", icon: Package },
+    { name: "People", icon: Users2 },
     { name: "Analytics", icon: LineChart },
     { name: "Recursos", icon: FolderSearch },
 ];

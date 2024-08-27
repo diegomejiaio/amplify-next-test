@@ -7,12 +7,16 @@ import ChatbotPage from "@/app/app/_pages/chatbot/ChatbotPage";
 import NavbarInternal from "@/components/NavbarInternal";
 import AnalyticsPage from "./_pages/analytics/AnalyticsPage";
 import DemosPage from "./_pages/demos/DemosPage";
+import PeoplePage from "./_pages/people/PeoplePage";
 // Mapeo de nombres de componente a los componentes reales
 const componentsMap: { [key: string]: React.FC } = {
     Home: HomePage,
     Chatbot: ChatbotPage,
     Analytics: AnalyticsPage,
-    Demos: DemosPage
+    Demos: DemosPage,
+    People: PeoplePage,
+    Recursos: HomePage,
+    Settings: HomePage,
 };
 
 
