@@ -11,11 +11,6 @@ export const auth = defineAuth({
       verificationEmailStyle: "CODE",
       verificationEmailSubject: "Digital Apps Tivit Latam - Verifica tu correo", 
       verificationEmailBody: (createCode) => `Usa este código para verificar tu cuenta: ${createCode()}`,
-      userInvitation: {
-        emailSubject: "Digital Apps Tivit Latam - Verifica tu correo",
-        emailBody: ( code ) =>
-          `Bienvenido(a) al equipo! Usa este código temporal para iniciar ${code()}.`,
-      },
     },
   },
 });
