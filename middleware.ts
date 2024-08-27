@@ -7,7 +7,7 @@ export async function middleware(request: NextRequest) {
 
     const authenticated = await runWithAmplifyServerContext({
         nextServerContext: {request, response},
-        operation: async (context) => {
+        operation: async (context: any) => {
             try{
                 const session = await fetchAuthSession(context, {})
                 return session.tokens !== undefined
@@ -19,10 +19,13 @@ export async function middleware(request: NextRequest) {
     })
     if(authenticated) {
         return response
+
     }
-    return NextResponse.redirect(new URL('/auth', request.url))
+    const parsedURL = new URL(request.url);
+    const path = parsedURL.pathname;
+    return NextResponse.redirect(new URL(`/auth/?origin=${path}`, request.url));
 }
 
 export const config = {
-    matcher: ["/((?!api|_next/static|_next/image|favicon.ico|auth).*)"]
+    matcher: ["/app/:path*"],
 }

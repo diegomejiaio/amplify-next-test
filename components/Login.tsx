@@ -34,13 +34,13 @@ export default function Login() {
             });
             console.log('Signed in', signInResponse.nextStep.signInStep );
             if (signInResponse.nextStep.signInStep === 'DONE') {
-                router.push('/app/home');
+                router.push('/app');
             }
             
         } catch (error) {
             const user = await getCurrentUser();
             if (user) {
-                router.push('/app/home');
+                router.push('/app');
             } else {
                 console.error('Error signing in 2', error);
             }            
