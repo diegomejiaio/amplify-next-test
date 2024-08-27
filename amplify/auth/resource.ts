@@ -14,7 +14,7 @@ export const auth = defineAuth({
       userInvitation: {
         emailSubject: "Digital Apps Tivit Latam - Verifica tu correo",
         emailBody: ( code ) =>
-          `Bienvenid@ al equpo! Usa este código temporal para iniciar ${code()} en la aplicación.`,
+          `Bienvenido(a) al equipo! Usa este código temporal para iniciar ${code()}.`,
       },
     },
   },
