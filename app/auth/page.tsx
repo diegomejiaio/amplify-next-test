@@ -22,7 +22,7 @@ Amplify.configure(outputs);
 const LoginForm = () => {
     return (
         <>
-            <NavbarPublic />
+            <NavbarPublic isAuthenticated={false} />
             <main className="relative w-full min-h-[calc(100vh-57px)] flex items-center justify-center">
                 <section className="absolute inset-0" style={{ marginTop: "-60px" }}>
                     <SpaceBackground />
