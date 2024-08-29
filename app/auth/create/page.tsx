@@ -3,17 +3,16 @@ import '@aws-amplify/ui-react/styles.css';
 import { Suspense } from 'react';
 import { I18n } from 'aws-amplify/utils';
 import { translations } from '@aws-amplify/ui-react';
-import NavbarPublic from '../../components/NavbarPublic';
-import SpaceBackground from '../../components/SpaceBackground';
-import Signup from '../../components/Auth';
+import NavbarPublic from '../../../components/NavbarPublic';
+import SpaceBackground from '../../../components/SpaceBackground';
+import Signup from '../../../components/Auth';
 import { Skeleton } from "@/components/ui/skeleton"
 import { Amplify } from 'aws-amplify';
-import outputs from "../../amplify_outputs.json";
+import outputs from "../../../amplify_outputs.json";
 import Login from '@/app/auth/_components/Login';
-import Auth from '../../components/Auth';
+import Auth from '../../../components/Auth';
 import { useState } from 'react';
-import ConfirmPassword from './_components/ConfirmPassword';
-import RecoverPassword from './_components/RecoverPassword';
+import ConfirmPassword from '../_components/ConfirmPassword';
 
 
 // Set language and configure Amplify
@@ -37,16 +36,6 @@ const LoginForm = () => {
         setEmail(email);
     }
 
-    const handleAuth = () => {
-        if (authCase === "login") {
-            return <Login handleEmail={handleEmail} handleAuthCase={handleAuthCase} />
-        } if (authCase === "defineNewPassword") {
-            return <ConfirmPassword  handleAuthCase={handleAuthCase} email={email}/>
-        } if (authCase === "recoverPassword") {
-            return <RecoverPassword handleAuthCase={handleAuthCase}/>
-        }
-    }
-
     return (
         <>
             <NavbarPublic isAuthenticated={false} />
@@ -55,7 +44,7 @@ const LoginForm = () => {
                     <SpaceBackground />
                     {/* <Login/> */}
                     <Suspense fallback={<Skeleton className="w-[480px] h-[420px] rounded-full" />}>
-                        {handleAuth()}
+                        <Auth/>
                     </Suspense>
                     
                 </section>
