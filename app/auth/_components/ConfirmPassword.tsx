@@ -23,10 +23,13 @@ interface ConfirmPasswordForm extends HTMLFormElement {
     readonly elements: ConfirmPasswordFormElements;
 }
 
-export default function ConfirmPassword({ handleAuthCase, email }: { handleAuthCase: (authCase: string) => void, email: string }) {
+export default function ConfirmPassword({ handleAuthCase, email, tempPasswordPass }: { handleAuthCase: (authCase: string) => void, email: string, tempPasswordPass: string }) {
     const router = useRouter();
     const [authError, setAuthError] = useState<string | null>(null);
     const [loadingButton, setLoadingButton] = useState(false);
+    const [tempPassword, setTempPassword] = useState(tempPasswordPass);
+    const [newPassword, setNewPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
 
     // Obfuscate the email for display purposes
     const obfuscateEmail = (email: string) => {
@@ -56,9 +59,6 @@ export default function ConfirmPassword({ handleAuthCase, email }: { handleAuthC
                     password: tempPassword
                 },
             });
-
-            console.log('Signed in', confirmResponse);
-
             if (confirmResponse.nextStep.signInStep === 'DONE') {
                 router.push('/app');
             }
@@ -84,28 +84,34 @@ export default function ConfirmPassword({ handleAuthCase, email }: { handleAuthC
                         <div className="grid gap-2">
                             <Label htmlFor="tempPassword">Contraseña temporal</Label>
                             <PasswordInput 
-                                id="tempPassword" 
-                                name="tempPassword" 
-                                placeholder="••••••••••" 
-                                required 
+                                id="tempPassword"
+                                name="tempPassword"
+                                placeholder="••••••••••"
+                                value={tempPassword}
+                                onChange={(e) => setTempPassword(e.target.value)}
+                                required
                             />
                         </div>
                         <div className="grid gap-2">
                             <Label htmlFor="newPassword">Nueva Contraseña</Label>
-                            <PasswordInput 
-                                id="newPassword" 
-                                name="newPassword" 
-                                placeholder="••••••••••" 
-                                required 
+                            <PasswordInput
+                                id="newPassword"
+                                name="newPassword"
+                                placeholder="••••••••••"
+                                value={newPassword}
+                                onChange={(e) => setNewPassword(e.target.value)}
+                                required
                             />
                         </div>
                         <div className="grid gap-2">
                             <Label htmlFor="confirmPassword">Confirmar Contraseña</Label>
                             <PasswordInput 
-                                id="confirmPassword" 
-                                name="confirmPassword" 
-                                placeholder="••••••••••" 
-                                required 
+                                id="confirmPassword"
+                                name="confirmPassword"
+                                placeholder="••••••••••"
+                                value={confirmPassword}
+                                onChange={(e) => setConfirmPassword(e.target.value)}
+                                required
                             />
                         </div>
                         {authError && <p className="text-red-500 text-sm">{authError}</p>}

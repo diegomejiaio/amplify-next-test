@@ -23,7 +23,7 @@ interface SignInForm extends HTMLFormElement {
     readonly elements: SignInFormElements;
 }
 
-export default function Login({ handleAuthCase, handleEmail }: { handleAuthCase: (authCase: string) => void, handleEmail: (email: string) => void }) {
+export default function Login({ handleAuthCase, handleEmail, handleTempPassword }: { handleAuthCase: (authCase: string) => void, handleEmail: (email: string) => void, handleTempPassword: (tempPassword: string) => void }) {
     const router = useRouter()
     const [authError, setAuthError] = useState<string | null>(null);
     const [password, setPassword] = useState("")
@@ -38,17 +38,16 @@ export default function Login({ handleAuthCase, handleEmail }: { handleAuthCase:
                 username: form.elements.email.value,
                 password: form.elements.password.value,
             });
-            console.log('Signed in', signInResponse.nextStep.signInStep );
             if (signInResponse.nextStep.signInStep === 'DONE') {
                 router.push('/app');
             } if (signInResponse.nextStep.signInStep === 'CONFIRM_SIGN_IN_WITH_NEW_PASSWORD_REQUIRED') {
                 handleEmail(form.elements.email.value);
                 handleAuthCase('defineNewPassword');
-                console.log(signInResponse);
+                handleTempPassword(form.elements.password.value);
+                setLoadingButton(false);
             } if (signInResponse.nextStep.signInStep === 'CONFIRM_SIGN_UP') {
-                console.log(signInResponse);
+                setLoadingButton(false);
             }
-            await setLoadingButton(false);
         } catch (error:any) {
             console.error('Error signing in', error.message);
             if (error.message === 'Incorrect username or password.') {
@@ -95,6 +94,9 @@ export default function Login({ handleAuthCase, handleEmail }: { handleAuthCase:
                         )}
                         <Button variant={"ghost"} className="w-full" onClick={() => handleAuthCase('recoverPassword')}>
                             <p className="text-xs">¿Olvidaste tu contraseña?</p>
+                        </Button>
+                        <Button variant={"ghost"} className="w-full hidden" onClick={() => router.push('/auth/create')}>
+                            <p className="text-xs">Autencitación cognito</p>
                         </Button>
                         </div>
                     </CardFooter>

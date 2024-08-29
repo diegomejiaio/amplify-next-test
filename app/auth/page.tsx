@@ -29,6 +29,7 @@ const LoginForm = () => {
 
     const [authCase, setAuthCase] = useState("login");
     const [email, setEmail] = useState("");
+    const [tempPassword, setTempPassword] = useState("");
 
     const handleAuthCase = (authCase: string) => {
         setAuthCase(authCase);
@@ -37,11 +38,15 @@ const LoginForm = () => {
         setEmail(email);
     }
 
+    const handleTempPassword = (tempPassword: string) => {
+        setTempPassword(tempPassword);
+    }
+
     const handleAuth = () => {
         if (authCase === "login") {
-            return <Login handleEmail={handleEmail} handleAuthCase={handleAuthCase} />
+            return <Login handleEmail={handleEmail} handleAuthCase={handleAuthCase} handleTempPassword={handleTempPassword}/>
         } if (authCase === "defineNewPassword") {
-            return <ConfirmPassword  handleAuthCase={handleAuthCase} email={email}/>
+            return <ConfirmPassword  handleAuthCase={handleAuthCase} email={email} tempPasswordPass={tempPassword}/>
         } if (authCase === "recoverPassword") {
             return <RecoverPassword handleAuthCase={handleAuthCase}/>
         }

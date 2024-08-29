@@ -110,13 +110,18 @@ export default function RecoverPassword({ handleAuthCase }: { handleAuthCase: (a
                             {authError && <p className="text-red-500 text-sm">{authError}</p>}
                         </CardContent>
                         <CardFooter>
-                            {loadingButton ? (
-                                <ButtonLoading text="Enviando" className="w-full" />
-                            ) : (
-                                <Button variant={"default"} className="w-full" type="submit">
-                                    Enviar código
+                            <div className="flex-auto space-y-2">
+                                {loadingButton ? (
+                                    <ButtonLoading text="Enviando" className="w-full" />
+                                ) : (
+                                    <Button variant={"default"} className="w-full" type="submit">
+                                        Enviar código
+                                    </Button>
+                                )}
+                                <Button variant={"ghost"} className="w-full" onClick={() => handleAuthCase('login')}>
+                                        <p className="text-xs">Ir al inicio</p>
                                 </Button>
-                            )}
+                            </div>
                         </CardFooter>
                     </form>
                 ) : (
@@ -128,15 +133,19 @@ export default function RecoverPassword({ handleAuthCase }: { handleAuthCase: (a
                         <CardContent className="grid gap-4">
                             <div className="grid gap-2">
                                 <Label htmlFor="otp">Código OTP</Label>
-                                <Input
-                                    id="otp"
-                                    name="otp"
-                                    type="text"
-                                    placeholder="Código OTP"
-                                    value={otp}
-                                    onChange={(e) => setOtp(e.target.value)}
-                                    required
-                                />
+                                <InputOTP value={otp} onChange={(value) => setOtp(value)} maxLength={6}>
+                                    <InputOTPGroup>
+                                        <InputOTPSlot index={0} />
+                                        <InputOTPSlot index={1} />
+                                        <InputOTPSlot index={2} />
+                                    </InputOTPGroup>
+                                    <InputOTPSeparator />
+                                    <InputOTPGroup>
+                                        <InputOTPSlot index={3} />
+                                        <InputOTPSlot index={4} />
+                                        <InputOTPSlot index={5} />
+                                    </InputOTPGroup>
+                                </InputOTP>
                             </div>
                             <div className="grid gap-2">
                                 <Label htmlFor="newPassword">Nueva Contraseña</Label>
