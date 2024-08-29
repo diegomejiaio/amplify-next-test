@@ -1,16 +1,25 @@
 'use client';
 import '@aws-amplify/ui-react/styles.css';
 import { Suspense } from 'react';
-import NavbarPublic from '../../components/NavbarPublic';
-import SpaceBackground from '../../components/SpaceBackground';
+import { I18n } from 'aws-amplify/utils';
+import { translations } from '@aws-amplify/ui-react';
+import NavbarPublic from '../../../components/NavbarPublic';
+import SpaceBackground from '../../../components/SpaceBackground';
+import Signup from '../../../components/Auth';
 import { Skeleton } from "@/components/ui/skeleton"
 import { Amplify } from 'aws-amplify';
-import outputs from "../../amplify_outputs.json";
+import outputs from "../../../amplify_outputs.json";
 import Login from '@/app/auth/_components/Login';
+import Auth from '../../../components/Auth';
 import { useState } from 'react';
-import ConfirmPassword from './_components/ConfirmPassword';
-import RecoverPassword from './_components/RecoverPassword';
-import Auth from '@/components/Auth';
+import ConfirmPassword from '../_components/ConfirmPassword';
+
+
+// Set language and configure Amplify
+I18n.putVocabularies(translations);
+I18n.setLanguage('es');
+
+
 
 Amplify.configure(outputs);
 
@@ -19,27 +28,12 @@ const LoginForm = () => {
 
     const [authCase, setAuthCase] = useState("login");
     const [email, setEmail] = useState("");
-    const [tempPassword, setTempPassword] = useState("");
 
     const handleAuthCase = (authCase: string) => {
         setAuthCase(authCase);
     }
     const handleEmail = (email: string) => {
         setEmail(email);
-    }
-
-    const handleTempPassword = (tempPassword: string) => {
-        setTempPassword(tempPassword);
-    }
-
-    const handleAuth = () => {
-        if (authCase === "login") {
-            return <Login handleEmail={handleEmail} handleAuthCase={handleAuthCase} handleTempPassword={handleTempPassword}/>
-        } if (authCase === "defineNewPassword") {
-            return <ConfirmPassword  handleAuthCase={handleAuthCase} email={email} tempPasswordPass={tempPassword}/>
-        } if (authCase === "recoverPassword") {
-            return <RecoverPassword handleAuthCase={handleAuthCase}/>
-        }
     }
 
     return (
@@ -50,7 +44,7 @@ const LoginForm = () => {
                     <SpaceBackground />
                     {/* <Login/> */}
                     <Suspense fallback={<Skeleton className="w-[480px] h-[420px] rounded-full" />}>
-                        {handleAuth()}
+                        <Auth/>
                     </Suspense>
                     
                 </section>

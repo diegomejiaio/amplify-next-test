@@ -1,7 +1,7 @@
 // withAuthentication.tsx
 import React from 'react';
 import { GetAuthCurrentUser } from '@/utils/utils';
-import { redirect, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 const withAuthentication = (WrappedComponent: React.ComponentType<any>) => {
     return (props: any) => {
