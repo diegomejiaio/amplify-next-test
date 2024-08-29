@@ -1,24 +1,27 @@
-## AWS Amplify Next.js (App Router) Starter Template
-
-This repository provides a starter template for creating applications using Next.js (App Router) and AWS Amplify, emphasizing easy setup for authentication, API, and database capabilities.
+## Official Website of Tivit Digital Latam in AWS Amplify Next.js
 
 ## Overview
+Welcome to Tivit Digital Latam App.
 
-This template equips you with a foundational Next.js application integrated with AWS Amplify, streamlined for scalability and performance. It is ideal for developers looking to jumpstart their project with pre-configured AWS services like Cognito, AppSync, and DynamoDB.
+## Product Features
+- **Get demos projects**
+- **Access to UI Components**
+- **Chat with an internal bot with security**
+- **Create new chatbots**
+- **Acceso to People Analytics**
 
-## Features
+## Tech Features
 
 - **Authentication**: Setup with Amazon Cognito for secure user authentication.
 - **API**: Ready-to-use GraphQL endpoint with AWS AppSync.
 - **Database**: Real-time database powered by Amazon DynamoDB.
+- **AI**: Bedrock, OpenAI API and Gemini API available.
+
 
 ## Deploying to AWS
 
 For detailed instructions on deploying your application, refer to the [deployment section](https://docs.amplify.aws/nextjs/start/quickstart/nextjs-app-router-client-components/#deploy-a-fullstack-app-to-aws) of our documentation.
 
-## Security
-
-See [CONTRIBUTING](CONTRIBUTING.md#security-issue-notifications) for more information.
 
 ## License
 
