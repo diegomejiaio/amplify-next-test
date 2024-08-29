@@ -60,7 +60,7 @@ export default function ConfirmPassword({ handleAuthCase, email, tempPasswordPas
                 },
             });
             if (confirmResponse.nextStep.signInStep === 'DONE') {
-                router.push('/app');
+                router.push('/app?notification=npw');
             }
         } catch (error: any) {
             setAuthError('Error al confirmar la nueva contraseña');

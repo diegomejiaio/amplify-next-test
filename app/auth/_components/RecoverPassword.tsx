@@ -53,7 +53,7 @@ export default function RecoverPassword({ handleAuthCase }: { handleAuthCase: (a
         if (nextStep.resetPasswordStep === 'CONFIRM_RESET_PASSWORD_WITH_CODE') {
             setStep("otp");
         } else if (nextStep.resetPasswordStep === 'DONE') {
-            router.push('/app');
+            router.push('/app?notification=npw');
         }
     }
 
