@@ -1,6 +1,7 @@
 // app/app/_pages/Home.tsx
 "use client";
-
+import { generateClient } from 'aws-amplify/data';
+import { type Schema } from '@/amplify/data/resource';
 import React from "react";
 import { Applications, columns } from "./columns";
 import { DataTable } from "./data-table";
@@ -30,64 +31,37 @@ import { Button } from "@/components/ui/button";
 import { File, ListFilter, PlusCircle } from "lucide-react";
 import SheetCreateDemo from "./components/SheetCreateDemo";
 
+const client = generateClient<Schema>();
+
 // Simulación de función para obtener datos
 async function getData(): Promise<Applications[]> {
-    return [
-        {
-            id: "1",
-            name: "Laser Lemonade Machine",
-            status: "running",
-            repository: "www.google.com",
-            public_url: "www.google.com",
-            version: "1.0.0",
-            cloud: "aws",
-        },
-        {
-            id: "2",
-            name: "Hypernova Headphones",
-            status: "launching",
-            repository: "google.com",
-            public_url: "google.com",
-            version: "1.0.0",
-            cloud: "aws",
-        },
-        {
-            id: "3",
-            name: "AeroGlow Desk Lamp",
-            status: "running",
-            repository: "google.com",
-            public_url: "google.com",
-            version: "1.0.0",
-            cloud: "gcp",
-        },
-        {
-            id: "4",
-            name: "TechTonic Energy Drink",
-            status: "down",
-            repository: "google.com",
-            public_url: "google.com",
-            version: "1.0.0",
-            cloud: "aws",
-        },
-        {
-            id: "5",
-            name: "Gamer Gear Pro Controller",
-            status: "down",
-            repository: "google.com",
-            public_url: "google.com",
-            version: "1.0.0",
-            cloud: "gcp",
-        },
-        {
-            id: "6",
-            name: "Luminous VR Headset",
-            status: "down",
-            repository: "google.com",
-            public_url: "google.com",
-            version: "1.0.0",
-            cloud: "aws",
+    try {
+        const { data: Demo, errors } = await client.models.Demo.list();
+        if (errors) {
+            console.error('Error fetching data:', errors);
+            return [];
+        } else if (!Demo || Demo.length === 0) {
+            console.warn('No data returned from query');
+            return [];
+        } else {
+            console.log('Data fetched successfully:', Demo);
+            return Demo
+                // sort by createdAt timestamp
+                .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+                .map((item) => ({
+                id: item.toString(),
+                name: item.name,
+                status: item.status || "running",
+                repository: item.repositoryUrl,
+                public_url: item.applicationUrl,
+                version: item.version,
+                cloud: item.cloud,
+            }));
         }
-    ];
+    } catch (error) {
+        console.error('Unexpected error:', error);
+        return [];
+    }
 }
 
 const HomePage: React.FC = () => {

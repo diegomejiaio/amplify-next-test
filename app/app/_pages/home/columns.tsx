@@ -9,11 +9,11 @@ import CustomIcon from "@/components/CustomIcon"
 export type Applications = {
     id: string
     name: string
-    status: "running" | "launching" | "stopping" | "down"
-    repository: string // Replace 'link' with 'string' or a valid type
-    public_url: string // Replace 'link' with 'string' or a valid type
-    version: string
-    cloud: "aws" | "gcp" | "azure"
+    status: "running" | "launching" | "stopping" | "down" | null
+    repository: string | null// Replace 'link' with 'string' or a valid type
+    public_url: string | null// Replace 'link' with 'string' or a valid type
+    version: string | null
+    cloud: "aws" | "gcp" | "azure" | null
 }
 
 export const columns: ColumnDef<Applications>[] = [
