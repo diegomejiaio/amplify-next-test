@@ -19,6 +19,7 @@ import type { Schema } from '@/amplify/data/resource';
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Save, Trash2 } from "lucide-react";
 import { getCurrentUser } from 'aws-amplify/auth';
+import { Url } from "next/dist/shared/lib/router/router";
 
 
 
