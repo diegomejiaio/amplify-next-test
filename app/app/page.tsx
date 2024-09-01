@@ -65,7 +65,7 @@ const App: React.FC = () => {
             <LateralNavbar activeItem={activeItem} setActiveItem={setActiveItem} />
             <div className="flex flex-col sm:gap-4 py-2 sm:py-4 pl-14 h-screen">
                 <NavbarInternal />
-                <div className="flex-1 overflow-y-auto p-2">
+                <div className="flex justify-center overflow-y-auto p-2">
                     <ActiveComponent />
                 </div>
             </div>
