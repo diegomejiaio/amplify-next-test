@@ -28,6 +28,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { File, ListFilter, PlusCircle } from "lucide-react";
+import SheetCreateDemo from "./components/SheetCreateDemo";
 
 // Simulación de función para obtener datos
 async function getData(): Promise<Applications[]> {
@@ -134,18 +135,21 @@ const HomePage: React.FC = () => {
                                 </DropdownMenuCheckboxItem>
                             </DropdownMenuContent>
                         </DropdownMenu>
-                        <Button size="sm" variant="outline" className="h-7 gap-1">
+
+                        <Button size="sm" variant="outline" className="h-7 gap-1" disabled>
                             <File className="h-3.5 w-3.5" />
                             <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
                                 Exportar
                             </span>
                         </Button>
-                        <Button size="sm" className="h-7 gap-1">
-                            <PlusCircle className="h-3.5 w-3.5" />
-                            <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-                                Agregar Producto
-                            </span>
-                        </Button>
+                        <SheetCreateDemo>
+                            <Button size="sm" className="h-7 gap-1">
+                                <PlusCircle className="h-3.5 w-3.5" />
+                                <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
+                                    Agregar Producto
+                                </span>
+                            </Button>
+                        </SheetCreateDemo>
                     </div>
                 </div>
                 <TabsContent value="all">
