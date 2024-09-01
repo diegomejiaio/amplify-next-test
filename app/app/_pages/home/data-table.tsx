@@ -43,6 +43,8 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
+import IconAws from "@/components/CustomIcon";
+import CustomIcon from "@/components/CustomIcon";
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
@@ -90,7 +92,7 @@ export function DataTable<TData, TValue>({
                             data-state={row.getIsSelected() && "selected"}
                         >   
                             <TableCell>
-                                <Boxes />
+                                <Package height={18}/>
                             </TableCell>
                             {row.getVisibleCells().map((cell) => (
                                 <TableCell key={cell.id}>

@@ -3,8 +3,7 @@
 import { ColumnDef } from "@tanstack/react-table"
 import { Badge } from "@/components/ui/badge"
 import { ExternalLink, Github } from "lucide-react"
-import Link from "next/link"
-
+import CustomIcon from "@/components/CustomIcon"
 
 
 export type Applications = {
@@ -18,9 +17,22 @@ export type Applications = {
 }
 
 export const columns: ColumnDef<Applications>[] = [
+
     {
         accessorKey: "name",
-        header: "Nombre del App",    
+        header: "Nombre del App",
+    },
+    {
+        accessorKey: "cloud",
+        header: "Cloud",
+        cell: ({ row }) => {
+            const cloud = (row.getValue("cloud")) as string
+            const iconHeight = 20
+            if (cloud ==="aws"){ return <CustomIcon height={iconHeight} variant={cloud}  />}
+            if (cloud ==="gcp"){ return <CustomIcon height={iconHeight} variant={cloud}/>}
+            if (cloud ==="azure"){ return <CustomIcon height={iconHeight} variant={cloud}/>}
+        },
+
     },
     {
         accessorKey: "status",

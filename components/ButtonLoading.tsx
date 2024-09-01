@@ -1,10 +1,11 @@
 import { ReloadIcon } from "@radix-ui/react-icons"
 
 import { Button } from "@/components/ui/button"
+import { ButtonVariant } from "@/utils/enums";
 
 interface ButtonLoadingProps {
     text: string;
-    variant?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link";
+    variant?: ButtonVariant;
     className?: string;
 }
 

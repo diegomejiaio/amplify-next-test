@@ -1,4 +1,5 @@
 import { type ClientSchema, a, defineData } from "@aws-amplify/backend";
+import type { CloudProviders, ApplicationStatus } from "../../utils/enums"
 
 /*== STEP 1 ===============================================================
 The section below creates a Todo database table with a "content" field. Try
@@ -7,11 +8,21 @@ specifies that any user authenticated via an API key can "create", "read",
 "update", and "delete" any "Todo" records.
 =========================================================================*/
 const schema = a.schema({
-  Todo: a
-    .model({
-      content: a.string(),
-    })
-    .authorization((allow) => [allow.publicApiKey()]),
+  Demo: a.model({
+    name: a.string().required(),
+    cloud: a.enum(['aws', 'gcp', 'azure']),
+    status: a.enum(['running', 'launching', 'stopping', 'down']),
+    repositoryUrl: a.string(),
+    applicationUrl: a.string(),
+    version: a.string(),
+    description: a.string(),
+    createdAt: a.datetime().default(() => new Date()).required(),
+    ownerId: a.belongsTo('User','email'), // Relación con el usuario creador
+    tags: a.string().array(),
+  })
+  .identifier(['name','createdAt']) // Identificador compuesto
+  .secondaryIndexes((index) => [index("status")]) // Índice secundario
+  .authorization((allow) => [allow.authenticated()]), // Todos los usuarios autenticados
 });
 
 export type Schema = ClientSchema<typeof schema>;
@@ -19,7 +30,7 @@ export type Schema = ClientSchema<typeof schema>;
 export const data = defineData({
   schema,
   authorizationModes: {
-    defaultAuthorizationMode: "apiKey",
+    defaultAuthorizationMode: "userPool",
     apiKeyAuthorizationMode: {
       expiresInDays: 30,
     },
