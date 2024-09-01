@@ -12,11 +12,11 @@ const schema = a.schema({
     name: a.string().required(),
     cloud: a.enum(['aws', 'gcp', 'azure']),
     status: a.enum(['running', 'launching', 'stopping', 'down']),
-    repositoryUrl: a.string(),
-    applicationUrl: a.string(),
+    repositoryUrl: a.url()	,
+    applicationUrl: a.url(),
     version: a.string(),
     description: a.string(),
-    createdAt: a.datetime().default(() => new Date()).required(),
+    createdAt: a.datetime().required(),
     ownerId: a.string(), // Relación con el usuario creador
     tags: a.string().array(),
   })
