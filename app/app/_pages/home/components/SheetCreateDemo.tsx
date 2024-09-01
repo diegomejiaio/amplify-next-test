@@ -18,6 +18,11 @@ import { generateClient } from 'aws-amplify/data';
 import type { Schema } from '@/amplify/data/resource';
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Save, Trash2 } from "lucide-react";
+import { getCurrentUser } from 'aws-amplify/auth';
+
+
+
+
 
 const client = generateClient<Schema>();
 
@@ -34,6 +39,7 @@ export default function SheetCreateDemo({ children }: SheetCreateDemoProps) {
     const [version, setVersion] = useState("");
     const [description, setDescription] = useState("");
     const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+
 
     // Lógica para habilitar o deshabilitar el botón "Guardar demo"
     useEffect(() => {
@@ -54,6 +60,7 @@ export default function SheetCreateDemo({ children }: SheetCreateDemoProps) {
 
     // Función para manejar la creación de la demo
     const handleCreateDemo = async () => {
+        const { userId } = await getCurrentUser();
         try {
             const { data, errors } = await client.models.Demo.create({
                 name,
@@ -64,6 +71,7 @@ export default function SheetCreateDemo({ children }: SheetCreateDemoProps) {
                 version,
                 description,
                 createdAt: new Date().toISOString(),
+                ownerId: userId,
             });
             if (errors) {
                 console.error(errors);
