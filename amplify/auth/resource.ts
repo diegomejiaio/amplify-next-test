@@ -13,28 +13,6 @@ export const auth = defineAuth({
       verificationEmailBody: (createCode) => `Usa este código para verificar tu cuenta: ${createCode()}`,
     },
   },
-  userAttributes: {
-    email: {
-      required: true,
-      mutable: false,
-    },
-    givenName: {
-      required: false,
-      mutable: true,
-    },
-    profilePicture: {
-      required: false,
-      mutable: true,
-    },
-    "custom:is_new_user": {
-      dataType: "Boolean",
-      mutable: true,
-    },
-    "custom:position": {
-      dataType: "String",
-      mutable: true,
-    },
-    }
     
 });
 
