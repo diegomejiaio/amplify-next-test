@@ -1,5 +1,4 @@
 import { type ClientSchema, a, defineData } from "@aws-amplify/backend";
-import type { CloudProviders, ApplicationStatus } from "../../utils/enums"
 
 /*== STEP 1 ===============================================================
 The section below creates a Todo database table with a "content" field. Try
@@ -8,10 +7,12 @@ specifies that any user authenticated via an API key can "create", "read",
 "update", and "delete" any "Todo" records.
 =========================================================================*/
 const schema = a.schema({
+  Clouds: a.enum(['aws', 'gcp', 'azure']),
+  ApplicationStatus: a.enum(['running', 'launching', 'stopping', 'down']),
   Demo: a.model({
     name: a.string().required(),
-    cloud: a.enum(['aws', 'gcp', 'azure']),
-    status: a.enum(['running', 'launching', 'stopping', 'down']),
+    cloud: a.ref('Clouds'),
+    status: a.ref('ApplicationStatus'),
     repositoryUrl: a.url()	,
     applicationUrl: a.url(),
     version: a.string(),
