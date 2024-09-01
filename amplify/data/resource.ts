@@ -17,7 +17,7 @@ const schema = a.schema({
     version: a.string(),
     description: a.string(),
     createdAt: a.datetime().default(() => new Date()).required(),
-    ownerId: a.belongsTo('User','email'), // Relación con el usuario creador
+    ownerId: a.string(), // Relación con el usuario creador
     tags: a.string().array(),
   })
   .identifier(['name','createdAt']) // Identificador compuesto
