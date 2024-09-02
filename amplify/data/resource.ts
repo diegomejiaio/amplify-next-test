@@ -10,6 +10,7 @@ const schema = a.schema({
   Clouds: a.enum(['aws', 'gcp', 'azure']),
   ApplicationStatus: a.enum(['running', 'launching', 'stopping', 'down']),
   Demo: a.model({
+    demoId: a.id().required(),
     name: a.string().required(),
     cloud: a.ref('Clouds'),
     status: a.ref('ApplicationStatus'),
@@ -18,10 +19,10 @@ const schema = a.schema({
     version: a.string(),
     description: a.string(),
     createdAt: a.datetime().required(),
-    ownerId: a.string(), // Relación con el usuario creador
+    ownerId: a.string(),
     tags: a.string().array(),
   })
-  .identifier(['name','createdAt']) // Identificador compuesto
+  .identifier(['demoId']) // Identificador compuesto
   .secondaryIndexes((index) => [index("status")]) // Índice secundario
   .authorization((allow) => [allow.authenticated()]), // Todos los usuarios autenticados
 });

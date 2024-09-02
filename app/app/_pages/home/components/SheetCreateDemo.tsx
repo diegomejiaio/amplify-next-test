@@ -16,14 +16,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { useState, useEffect } from "react";
 import { generateClient } from 'aws-amplify/data';
 import type { Schema } from '@/amplify/data/resource';
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { Save, Trash2 } from "lucide-react";
 import { getCurrentUser } from 'aws-amplify/auth';
-import { Url } from "next/dist/shared/lib/router/router";
-
-
-
-
+import { ButtonLoading } from "@/components/ButtonLoading";
 
 const client = generateClient<Schema>();
 
@@ -40,6 +35,8 @@ export default function SheetCreateDemo({ children }: SheetCreateDemoProps) {
     const [version, setVersion] = useState("");
     const [description, setDescription] = useState("");
     const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+    const [sheetOpen, setSheetOpen] = useState(false);
+    const [loadingButton, setLoadingButton] = useState(false);
 
 
     // Lógica para habilitar o deshabilitar el botón "Guardar demo"
@@ -61,9 +58,11 @@ export default function SheetCreateDemo({ children }: SheetCreateDemoProps) {
 
     // Función para manejar la creación de la demo
     const handleCreateDemo = async () => {
+        setLoadingButton(true);
         const { userId } = await getCurrentUser();
         try {
             const { data, errors } = await client.models.Demo.create({
+                demoId: crypto.randomUUID(),
                 name,
                 cloud,
                 status,
@@ -76,17 +75,21 @@ export default function SheetCreateDemo({ children }: SheetCreateDemoProps) {
             });
             if (errors) {
                 console.error(errors);
+                setLoadingButton(false);
             } else {
                 console.log('Demo created successfully:', data);
-                clearForm(); // Limpiar el formulario después de guardar exitosamente
+                setLoadingButton(false);
+                clearForm();
+                setSheetOpen(false);
             }
         } catch (error) {
+            setLoadingButton(false);
             console.error('Failed to create demo:', error);
         }
     };
 
     return (
-        <Sheet>
+        <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
             <SheetTrigger asChild>
                 {children}
             </SheetTrigger>
@@ -195,10 +198,14 @@ export default function SheetCreateDemo({ children }: SheetCreateDemoProps) {
                     </div>
                 </div>
                 <SheetFooter className="border-t flex-shrink-0 pt-2">
-                    <Button onClick={handleCreateDemo} disabled={isButtonDisabled} className="ml-2">
-                        <Save height={16} />
-                        Guardar demo
-                    </Button>
+                    {loadingButton ? (
+                        <ButtonLoading text="Guardando" className="ml-2"/>
+                    ) : (
+                        <Button onClick={handleCreateDemo} disabled={isButtonDisabled} className="ml-2">
+                            <Save height={16} />
+                            Guardar demo
+                        </Button>
+                    )}
                     <Button onClick={clearForm} variant="outline">
                         <Trash2 height={16}/>
                         Limpiar

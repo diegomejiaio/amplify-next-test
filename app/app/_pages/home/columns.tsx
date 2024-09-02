@@ -2,19 +2,32 @@
 
 import { ColumnDef } from "@tanstack/react-table"
 import { Badge } from "@/components/ui/badge"
-import { ExternalLink, Github } from "lucide-react"
+import { Edit, ExternalLink, Github, MoreHorizontal } from "lucide-react"
 import CustomIcon from "@/components/CustomIcon"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { Button } from "@/components/ui/button"
 
 
 export type Applications = {
     id: string
     name: string
-    status: "running" | "launching" | "stopping" | "down"
-    repository: string // Replace 'link' with 'string' or a valid type
-    public_url: string // Replace 'link' with 'string' or a valid type
-    version: string
-    cloud: "aws" | "gcp" | "azure"
+    status: "running" | "launching" | "stopping" | "down" | null
+    repository: string | null// Replace 'link' with 'string' or a valid type
+    public_url: string | null// Replace 'link' with 'string' or a valid type
+    version: string | null
+    cloud: "aws" | "gcp" | "azure" | null
 }
+
+// actions funtions
+
+export async function editDemo(demoId: string,createdAt:string) {
+    console.log('Edit:', demoId + createdAt)
+}
+async function deleteDemo(demoId: string,createdAt:string) {
+        console.log('Delete:', demoId + createdAt)
+    }
+
+
 
 export const columns: ColumnDef<Applications>[] = [
 
@@ -88,4 +101,28 @@ export const columns: ColumnDef<Applications>[] = [
         header: "Versión",
         
     },
+    {
+        accessorKey:"actions",
+        header: "",
+        cell: ({ row }) => {
+            return (
+                <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                        <Button
+                            aria-haspopup="true"
+                            size="icon"
+                            variant="ghost"
+                        >
+                            <MoreHorizontal className="h-4 w-4" />
+                            <span className="sr-only">Toggle menu</span>
+                        </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                        <DropdownMenuItem onClick={() => console.log(row) } >Editar</DropdownMenuItem>
+                        <DropdownMenuItem>Eliminar</DropdownMenuItem>
+                    </DropdownMenuContent>
+                </DropdownMenu>
+            )
+        }
+    }
 ]

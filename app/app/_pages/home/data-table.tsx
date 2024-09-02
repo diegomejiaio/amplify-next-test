@@ -1,21 +1,8 @@
 "use client"
 
-
 import {
-    File,
-    Home,
-    LineChart,
-    ListFilter,
     MoreHorizontal,
     Package,
-    Package2,
-    PanelLeft,
-    PlusCircle,
-    Search,
-    Settings,
-    ShoppingCart,
-    Users2,
-    Boxes,
 } from "lucide-react"
 import React from "react";
 import { Button } from "@/components/ui/button"
@@ -43,8 +30,6 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import IconAws from "@/components/CustomIcon";
-import CustomIcon from "@/components/CustomIcon";
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
@@ -99,31 +84,12 @@ export function DataTable<TData, TValue>({
                                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                 </TableCell>
                             ))}
-                            <TableCell>
-                                <DropdownMenu>
-                                    <DropdownMenuTrigger asChild>
-                                        <Button
-                                            aria-haspopup="true"
-                                            size="icon"
-                                            variant="ghost"
-                                        >
-                                            <MoreHorizontal className="h-4 w-4" />
-                                            <span className="sr-only">Toggle menu</span>
-                                        </Button>
-                                    </DropdownMenuTrigger>
-                                    <DropdownMenuContent align="end">
-                                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                                        <DropdownMenuItem>Edit</DropdownMenuItem>
-                                        <DropdownMenuItem>Delete</DropdownMenuItem>
-                                    </DropdownMenuContent>
-                                </DropdownMenu>
-                            </TableCell>
                         </TableRow>
                     ))
                 ) : (
                     <TableRow>
                         <TableCell colSpan={columns.length} className="h-24 text-center">
-                            No results.
+                            Sin resultados
                         </TableCell>
                     </TableRow>
                 )}
