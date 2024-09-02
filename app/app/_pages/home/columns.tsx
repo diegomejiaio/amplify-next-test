@@ -7,30 +7,30 @@ import CustomIcon from "@/components/CustomIcon"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
 
+import { generateClient } from 'aws-amplify/data';
+import { type Schema } from '@/amplify/data/resource';
+
+const client = generateClient<Schema>();
+
 
 export type Applications = {
-    id: string
-    name: string
-    status: "running" | "launching" | "stopping" | "down" | null
-    repository: string | null// Replace 'link' with 'string' or a valid type
-    public_url: string | null// Replace 'link' with 'string' or a valid type
-    version: string | null
-    cloud: "aws" | "gcp" | "azure" | null
+    id: string;
+    name: string;
+    status: "running" | "launching" | "stopping" | "down" | null;
+    repository: string | null;// Replace 'link' with 'string' or a valid type
+    public_url: string | null;// Replace 'link' with 'string' or a valid type
+    version: string | null;
+    cloud: "aws" | "gcp" | "azure" | null;
+    created_at: string | null;
+    description: string | null;
 }
 
 // actions funtions
 
-export async function editDemo(demoId: string,createdAt:string) {
-    console.log('Edit:', demoId + createdAt)
+export async function editDemo(demoId: string) {
+    console.log('Edit:', demoId)
 }
-async function deleteDemo(demoId: string,createdAt:string) {
-        console.log('Delete:', demoId + createdAt)
-    }
-
-
-
 export const columns: ColumnDef<Applications>[] = [
-
     {
         accessorKey: "name",
         header: "Nombre del App",
@@ -45,7 +45,6 @@ export const columns: ColumnDef<Applications>[] = [
             if (cloud ==="gcp"){ return <CustomIcon height={iconHeight} variant={cloud}/>}
             if (cloud ==="azure"){ return <CustomIcon height={iconHeight} variant={cloud}/>}
         },
-
     },
     {
         accessorKey: "status",
@@ -67,7 +66,7 @@ export const columns: ColumnDef<Applications>[] = [
         cell: ({ row }) => {
             const repository = (row.getValue("repository")) as string
             return <a
-                        href={repository.startsWith('http') ? repository : `//${repository}`}
+                        href={repository}
                         target="_blank"
                         rel="noreferrer"
                         className="flex items-center space-x-2"
@@ -85,7 +84,7 @@ export const columns: ColumnDef<Applications>[] = [
         cell: ({ row }) => {
             const url = (row.getValue("public_url")) as string
             return <a
-                href={url.startsWith('http') ? url : `//${url}`}
+                href={url}
                 target="_blank"
                 rel="noreferrer"
                 className="flex items-center space-x-2"
@@ -99,30 +98,5 @@ export const columns: ColumnDef<Applications>[] = [
     {
         accessorKey: "version",
         header: "Versión",
-        
     },
-    {
-        accessorKey:"actions",
-        header: "",
-        cell: ({ row }) => {
-            return (
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button
-                            aria-haspopup="true"
-                            size="icon"
-                            variant="ghost"
-                        >
-                            <MoreHorizontal className="h-4 w-4" />
-                            <span className="sr-only">Toggle menu</span>
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                        <DropdownMenuItem onClick={() => console.log(row) } >Editar</DropdownMenuItem>
-                        <DropdownMenuItem>Eliminar</DropdownMenuItem>
-                    </DropdownMenuContent>
-                </DropdownMenu>
-            )
-        }
-    }
 ]

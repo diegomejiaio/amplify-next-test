@@ -21,6 +21,7 @@ const schema = a.schema({
     createdAt: a.datetime().required(),
     ownerId: a.string(),
     tags: a.string().array(),
+    isVisible: a.boolean().default(true),
   })
   .identifier(['demoId']) // Identificador compuesto
   .secondaryIndexes((index) => [index("status")]) // Índice secundario

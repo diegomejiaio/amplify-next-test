@@ -19,14 +19,14 @@ import type { Schema } from '@/amplify/data/resource';
 import { Save, Trash2 } from "lucide-react";
 import { getCurrentUser } from 'aws-amplify/auth';
 import { ButtonLoading } from "@/components/ButtonLoading";
-
-const client = generateClient<Schema>();
+import { Applications } from "../columns";
 
 interface SheetCreateDemoProps {
     children: React.ReactNode;
+    createDemo: (demo: Applications) => void;
 }
 
-export default function SheetCreateDemo({ children }: SheetCreateDemoProps) {
+const SheetCreateDemo: React.FC<SheetCreateDemoProps> = ({ children, createDemo }) => {
     const [name, setName] = useState("");
     const [cloud, setCloud] = useState<"aws" | "gcp" | "azure">("aws");
     const [status, setStatus] = useState<"running" | "launching" | "stopping" | "down">("running");
@@ -60,33 +60,28 @@ export default function SheetCreateDemo({ children }: SheetCreateDemoProps) {
     const handleCreateDemo = async () => {
         setLoadingButton(true);
         const { userId } = await getCurrentUser();
+        const demoCreated: Applications = {
+            id:crypto.randomUUID(),
+            name,
+            cloud,
+            status,
+            repository:repositoryUrl,
+            public_url:applicationUrl,
+            version,
+            description,
+            created_at: new Date().toISOString(),
+        };
         try {
-            const { data, errors } = await client.models.Demo.create({
-                demoId: crypto.randomUUID(),
-                name,
-                cloud,
-                status,
-                repositoryUrl,
-                applicationUrl,
-                version,
-                description,
-                createdAt: new Date().toISOString(),
-                ownerId: userId,
-            });
-            if (errors) {
-                console.error(errors);
-                setLoadingButton(false);
-            } else {
-                console.log('Demo created successfully:', data);
-                setLoadingButton(false);
-                clearForm();
-                setSheetOpen(false);
-            }
+            createDemo(demoCreated);
         } catch (error) {
             setLoadingButton(false);
             console.error('Failed to create demo:', error);
-        }
-    };
+        } finally {
+            setLoadingButton(false);
+            clearForm();
+            setSheetOpen(false);
+        };
+    }
 
     return (
         <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
@@ -218,3 +213,5 @@ export default function SheetCreateDemo({ children }: SheetCreateDemoProps) {
         </Sheet>
     );
 }
+
+export default SheetCreateDemo;
