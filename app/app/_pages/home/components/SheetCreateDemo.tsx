@@ -62,6 +62,7 @@ export default function SheetCreateDemo({ children }: SheetCreateDemoProps) {
         const { userId } = await getCurrentUser();
         try {
             const { data, errors } = await client.models.Demo.create({
+                demoId: crypto.randomUUID(),
                 name,
                 cloud,
                 status,

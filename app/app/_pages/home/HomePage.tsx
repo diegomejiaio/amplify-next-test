@@ -49,7 +49,7 @@ async function getData(): Promise<Applications[]> {
                 // sort by createdAt timestamp
                 .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
                 .map((item) => ({
-                id: item.toString(),
+                id: item.demoId,
                 name: item.name,
                 status: item.status || "running",
                 repository: item.repositoryUrl,
@@ -74,6 +74,20 @@ const HomePage: React.FC = () => {
         };
         fetchData();
     }, []);
+
+    async function handleDelete(demoId: string, createdAt: string) {
+        try {
+            const { data , errors } = await client.models.Demo.delete({ demoId, createdAt });
+            if (errors) {
+                console.error('Error deleting data:', errors);
+            } else {
+                console.log('Data deleted successfully');
+                setData(data => data.filter(item => item.id !== demoId));
+            }
+        } catch (error) {
+            console.error('Unexpected error:', error);
+        }
+    }
 
     return (
         <div className="grid flex-1 max-w-[1200px] witems-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
