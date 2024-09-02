@@ -90,7 +90,7 @@ const HomePage: React.FC = () => {
             // update is visuble false
             const { data: deletedDemo, errors } = await client.models.Demo.update({
                 demoId: demoId,
-                isVisible: false,
+                isVisible: false as boolean,
             });
             if (!errors) {
                 setData((prevData) => prevData.filter((demo) => demo.id !== demoId));
