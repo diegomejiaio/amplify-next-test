@@ -1,5 +1,6 @@
 // app/app/_pages/Home.tsx
 "use client";
+import { useToast } from "@/components/ui/use-toast";
 import { generateClient } from 'aws-amplify/data';
 import { type Schema } from '@/amplify/data/resource';
 import React from "react";
@@ -30,6 +31,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { File, ListFilter, PlusCircle } from "lucide-react";
 import SheetCreateDemo from "./components/SheetCreateDemo";
+import { Toaster } from "@/components/ui/toaster";
+import { getCurrentUser } from 'aws-amplify/auth';
 
 const client = generateClient<Schema>();
 
@@ -46,8 +49,8 @@ async function getData(): Promise<Applications[]> {
         } else {
             console.log('Data fetched successfully:', Demo);
             return Demo
-                // sort by createdAt timestamp
-                .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+                // fiter isVisible true
+                .filter((item) => item.isVisible === true)
                 .map((item) => ({
                 id: item.demoId,
                 name: item.name,
@@ -56,6 +59,9 @@ async function getData(): Promise<Applications[]> {
                 public_url: item.applicationUrl,
                 version: item.version,
                 cloud: item.cloud,
+                created_at: item.createdAt,
+                description: item.description,
+                owner: item.ownerId,
             }));
         }
     } catch (error) {
@@ -66,6 +72,8 @@ async function getData(): Promise<Applications[]> {
 
 const HomePage: React.FC = () => {
     const [data, setData] = React.useState<Applications[]>([]);
+    const [isDeleting, setIsDeleting] = React.useState(false);
+    const { toast } = useToast();
 
     React.useEffect(() => {
         const fetchData = async () => {
@@ -75,22 +83,83 @@ const HomePage: React.FC = () => {
         fetchData();
     }, []);
 
-    // async function handleDelete(demoId: string, createdAt: string) {
-    //     try {
-    //         const { data , errors } = await client.models.Demo.delete({ demoId, createdAt });
-    //         if (errors) {
-    //             console.error('Error deleting data:', errors);
-    //         } else {
-    //             console.log('Data deleted successfully');
-    //             setData(data => data.filter(item => item.id !== demoId));
-    //         }
-    //     } catch (error) {
-    //         console.error('Unexpected error:', error);
-    //     }
-    // }
+    const deleteDemo = async (demoId: string) => {
+        setIsDeleting(true);
+        console.log(`Deleting demo with ID: ${demoId}`);
+        try {
+            // update is visuble false
+            const { data: deletedDemo, errors } = await client.models.Demo.update({
+                demoId: demoId,
+                isVisible: false,
+            });
+            if (!errors) {
+                setData((prevData) => prevData.filter((demo) => demo.id !== demoId));
+                toast({
+                    title: "Demostración eliminada",
+                    description: "La demostración se ha eliminado correctamente.",
+                    action: (
+                        <Button variant="outline" onClick={() => undoDelete(deletedDemo)}>
+                            Undo
+                        </Button>
+                    ),
+                });
+            } else {
+                throw new Error("Failed to delete demo");
+            }
+        } catch (error) {
+            console.error('Error deleting demo:', error);
+            toast({
+                title: "Error",
+                description: "Failed to delete the demo. Please try again.",
+                variant: "destructive",
+            });
+        } finally {
+            setIsDeleting(false);
+        }
+    };
+
+    const undoDelete = async (deletedDemo: any) => {
+        try {
+            // update is visuble true
+            const { data: updatedDemo, errors } = await client.models.Demo.update({
+                demoId: deletedDemo.demoId,
+                isVisible: true,
+            });
+        } catch (error) {
+            console.error('Error undoing delete:', error);
+        }
+    };
+
+    const createDemo = async (demo: Applications) => {
+        const { userId } = await getCurrentUser();
+        try {
+            const { data: createdDemo, errors } = await client.models.Demo.create({
+                demoId: crypto.randomUUID(),
+                name: demo.name,
+                status: demo.status,
+                repositoryUrl: demo.repository,
+                applicationUrl: demo.public_url,
+                version: demo.version,
+                cloud: demo.cloud,
+                description: demo.description,
+                createdAt: new Date().toISOString(),
+                ownerId: userId,
+                isVisible: true,
+            });
+            if (!errors) {
+                setData((prevData) => [...prevData, demo]);
+            } else {
+                throw new Error("Failed to create demo");
+            }
+        } catch (error) {
+            console.error('Error creating demo:', error);
+        }
+    }
 
     return (
         <div className="grid flex-1 max-w-[1200px] witems-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
+            {/* Rest of the component */}
+            <Toaster />
             <Tabs defaultValue="all">
                 <div className="flex items-center">
                     <TabsList>
@@ -130,7 +199,7 @@ const HomePage: React.FC = () => {
                                 Exportar
                             </span>
                         </Button>
-                        <SheetCreateDemo>
+                        <SheetCreateDemo createDemo={createDemo}>
                             <Button size="sm" className="h-7 gap-1">
                                 <PlusCircle className="h-3.5 w-3.5" />
                                 <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
@@ -149,7 +218,7 @@ const HomePage: React.FC = () => {
                             </CardDescription>
                         </CardHeader>
                         <CardContent>
-                            <DataTable columns={columns} data={data} />
+                            <DataTable columns={columns} data={data} deleteDemo={deleteDemo} />
                         </CardContent>
                         <CardFooter>
                             <div className="text-xs text-muted-foreground">
