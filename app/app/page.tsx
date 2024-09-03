@@ -40,11 +40,6 @@ const App: React.FC = () => {
     useEffect(() => {
         const notification = searchParams.get('notification');
         if (notification === 'npw') {
-            // toast({
-            //     title: "Bienvenid@",
-            //     description: "Tu contraseña ha sido actualizada correctamente 🎉",
-            //     variant: "default",
-            // });
             toast({
                 action: (
                     <div className="w-full flex items-center">

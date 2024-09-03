@@ -1,5 +1,6 @@
 // app/app/_pages/Home.tsx
 "use client";
+import { useState, useEffect } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { generateClient } from 'aws-amplify/data';
 import { type Schema } from '@/amplify/data/resource';
@@ -33,6 +34,7 @@ import { File, ListFilter, PlusCircle } from "lucide-react";
 import SheetCreateDemo from "./components/SheetCreateDemo";
 import { Toaster } from "@/components/ui/toaster";
 import { getCurrentUser } from 'aws-amplify/auth';
+import App from "next/app";
 
 const client = generateClient<Schema>();
 
@@ -71,13 +73,15 @@ async function getData(): Promise<Applications[]> {
 }
 
 const HomePage: React.FC = () => {
-    const [data, setData] = React.useState<Applications[]>([]);
-    const [isDeleting, setIsDeleting] = React.useState(false);
+    const [dataIsLoading,setDataIsLoadig] = useState(true);
+    const [data, setData] = useState<Applications[]>([]);
+    const [isDeleting, setIsDeleting] = useState(false);
     const { toast } = useToast();
 
-    React.useEffect(() => {
+    useEffect(() => {
         const fetchData = async () => {
             const result = await getData();
+            setDataIsLoadig(false);
             setData(result);
         };
         fetchData();
@@ -87,7 +91,6 @@ const HomePage: React.FC = () => {
         setIsDeleting(true);
         console.log(`Deleting demo with ID: ${demoId}`);
         try {
-            // update is visuble false
             const { data: deletedDemo, errors } = await client.models.Demo.update({
                 demoId: demoId,
                 isVisible: false as boolean,
@@ -104,13 +107,13 @@ const HomePage: React.FC = () => {
                     ),
                 });
             } else {
-                throw new Error("Failed to delete demo");
+                throw new Error("Hubo un error al eliminar la demo");
             }
         } catch (error) {
             console.error('Error deleting demo:', error);
             toast({
                 title: "Error",
-                description: "Failed to delete the demo. Please try again.",
+                description: "Error la intentar eliminar.",
                 variant: "destructive",
             });
         } finally {
@@ -118,13 +121,21 @@ const HomePage: React.FC = () => {
         }
     };
 
-    const undoDelete = async (deletedDemo: any) => {
+    const undoDelete = async (deletedDemo: any ) => {
         try {
-            // update is visuble true
             const { data: updatedDemo, errors } = await client.models.Demo.update({
                 demoId: deletedDemo.demoId,
                 isVisible: true,
             });
+            if (!errors) {
+                setData(data);
+                toast({
+                    title: "Demostración restaurada",
+                    description: "La demostración se ha restaurado correctamente.",
+                });
+            } else {
+                throw new Error("Failed to undo delete");
+            }
         } catch (error) {
             console.error('Error undoing delete:', error);
         }
@@ -147,7 +158,18 @@ const HomePage: React.FC = () => {
                 isVisible: true,
             });
             if (!errors) {
-                setData((prevData) => [...prevData, demo]);
+                const newDemo: Applications = {
+                    id: createdDemo?.demoId ?? '',
+                    name: createdDemo?.name ?? '',
+                    status: createdDemo?.status ?? 'running',
+                    repository: createdDemo?.repositoryUrl ?? '',
+                    public_url: createdDemo?.applicationUrl ?? '',
+                    version: createdDemo?.version ?? '',
+                    cloud: createdDemo?.cloud ?? 'aws',
+                    created_at: createdDemo?.createdAt ?? '',
+                    description: createdDemo?.description ?? '',
+                };
+                setData((prevData) => [...prevData, newDemo]);
             } else {
                 throw new Error("Failed to create demo");
             }
@@ -212,13 +234,13 @@ const HomePage: React.FC = () => {
                 <TabsContent value="all">
                     <Card className="border-input">
                         <CardHeader>
-                        <CardTitle>Demos</CardTitle>
+                        <CardTitle>Demostraciones</CardTitle>
                             <CardDescription>
                                 Lista de aplicaciones demo de Tivit Digital Latam.
                             </CardDescription>
                         </CardHeader>
                         <CardContent>
-                            <DataTable columns={columns} data={data} deleteDemo={deleteDemo} />
+                            <DataTable columns={columns} data={data} deleteDemo={deleteDemo} isLoading={dataIsLoading}  />
                         </CardContent>
                         <CardFooter>
                             <div className="text-xs text-muted-foreground">
