@@ -42,6 +42,7 @@ export default function RecoverPassword({ handleAuthCase }: { handleAuthCase: (a
         try {
             const output = await resetPassword({ username: email });
             handleResetPasswordNextSteps(output);
+            console.log(output);
         } catch (error) {
             setAuthError('Error enviando el código de recuperación');
             setLoadingButton(false);
