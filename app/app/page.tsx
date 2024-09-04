@@ -1,3 +1,4 @@
+//app/app/page.tsx
 "use client";
 
 import React, { useState, useEffect, Suspense } from "react";
@@ -56,16 +57,18 @@ const App: React.FC = () => {
     }, [searchParams, toast]);
 
     return (
-        <div>
+        <>
             <LateralNavbar activeItem={activeItem} setActiveItem={setActiveItem} />
-            <div className="flex flex-col sm:gap-4 py-2 sm:py-4 pl-14 h-screen">
+            <div className="flex flex-col sm:gap-4 pl-10 sm:pl-14 h-screen">
                 <NavbarInternal />
-                <div className="flex justify-center overflow-y-auto p-2">
-                    <ActiveComponent />
-                </div>
+                <main className="flex h-full overflow-x-auto justify-center items-start p-4 sm:px-6 sm:py-0">
+                    <div className="w-full max-w-full md:max-w-[1600px] grid items-start gap-4 sm:py-0 md:gap-8">
+                            <ActiveComponent />
+                    </div>
+                </main>
             </div>
                 <Toaster />
-        </div>
+        </>
     );
 };
 

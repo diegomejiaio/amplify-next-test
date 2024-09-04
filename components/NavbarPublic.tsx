@@ -37,9 +37,9 @@ export default function NavbarPublic({ isAuthenticated }: NavbarPublicProps) {
                 <div className="md:ml-8"></div>
                 <Button variant={"ghost"} asChild>
                     {isAuthenticated ? (
-                        <Link href="/app">Ir a la app</Link>
+                        <Link className="px-1" href="/app">Ir a la app</Link>
                     ) : (
-                        <Link href="/auth">Iniciar sesión</Link>
+                        <Link className="px-1" href="/auth">Iniciar sesión</Link>
                     )}
                 </Button>
                 </div>

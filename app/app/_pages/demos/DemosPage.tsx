@@ -101,7 +101,7 @@ const DemosPage: React.FC = () => {
     }, []);
 
     return (
-        <div className="grid flex-1 max-w-[1200px]  items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
+        <div className="pr-4 sm:pr-0">
             <Tabs defaultValue="all">
                 <div className="flex items-center">
                     <TabsList>

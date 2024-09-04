@@ -1,20 +1,10 @@
-import form from "react"
+//app/app/_pages/chatbot/ChatbotPage.tsx
 import {
     Bird,
-    Book,
-    Bot,
-    Code2,
     CornerDownLeft,
-    LifeBuoy,
     Mic,
     Paperclip,
     Rabbit,
-    Settings,
-    Settings2,
-    Share,
-    SquareTerminal,
-    SquareUser,
-    Triangle,
     Turtle,
 } from "lucide-react"
 
@@ -39,98 +29,9 @@ import {
 
 const ChatbotPage: React.FC = () => {
     return (
-        <div className="flex h-screen pl-[53px] items-start p-4 sm:px-6 sm:py-0">
-            <aside className="inset-y left-0 z-1 flex h-full flex-col border-input">
-                <nav className="grid gap-1 p-2">
-                    <TooltipProvider>
-                        <Tooltip>
-                            <TooltipTrigger asChild>
-                                <Button
-                                    variant="ghost"
-                                    size="icon"
-                                    className="rounded-lg bg-muted"
-                                    aria-label="Playground"
-                                >
-                                    <SquareTerminal className="size-5" />
-                                </Button>
-                            </TooltipTrigger>
-                            <TooltipContent side="right" sideOffset={5}>
-                                Playground
-                            </TooltipContent>
-                        </Tooltip>
-                    </TooltipProvider>
-                    <TooltipProvider>
-                        <Tooltip>
-                            <TooltipTrigger asChild>
-                                <Button
-                                    variant="ghost"
-                                    size="icon"
-                                    className="rounded-lg"
-                                    aria-label="Models"
-                                >
-                                    <Bot className="size-5" />
-                                </Button>
-                            </TooltipTrigger>
-                            <TooltipContent side="right" sideOffset={5}>
-                                Models
-                            </TooltipContent>
-                        </Tooltip>
-                    </TooltipProvider>
-                    <TooltipProvider>
-                        <Tooltip>
-                            <TooltipTrigger asChild>
-                                <Button
-                                    variant="ghost"
-                                    size="icon"
-                                    className="rounded-lg"
-                                    aria-label="API"
-                                >
-                                    <Code2 className="size-5" />
-                                </Button>
-                            </TooltipTrigger>
-                            <TooltipContent side="right" sideOffset={5}>
-                                API
-                            </TooltipContent>
-                        </Tooltip>
-                    </TooltipProvider>
-                    <TooltipProvider>
-                        <Tooltip>
-                            <TooltipTrigger asChild>
-                                <Button
-                                    variant="ghost"
-                                    size="icon"
-                                    className="rounded-lg"
-                                    aria-label="Documentation"
-                                >
-                                    <Book className="size-5" />
-                                </Button>
-                            </TooltipTrigger>
-                            <TooltipContent side="right" sideOffset={5}>
-                                Documentation
-                            </TooltipContent>
-                        </Tooltip>
-                    </TooltipProvider>
-                    <TooltipProvider>
-                        <Tooltip>
-                            <TooltipTrigger asChild>
-                                <Button
-                                    variant="ghost"
-                                    size="icon"
-                                    className="rounded-lg"
-                                    aria-label="Settings"
-                                >
-                                    <Settings2 className="size-5" />
-                                </Button>
-                            </TooltipTrigger>
-                            <TooltipContent side="right" sideOffset={5}>
-                                Settings
-                            </TooltipContent>
-                        </Tooltip>
-                    </TooltipProvider>
-                </nav>
-            </aside>
-            <div className="flex flex-col">
-                <main className="grid flex-1 gap-4 overflow-auto p-4 md:grid-cols-2 lg:grid-cols-3">
+        <>
+            <div>
+                <main className="grid flex-1 gap-4 overflow-auto md:grid-cols-2 lg:grid-cols-3">
                     <div
                         className="relative hidden flex-col items-start gap-8 md:flex" x-chunk="dashboard-03-chunk-0"
                     >
@@ -243,7 +144,7 @@ const ChatbotPage: React.FC = () => {
                             </fieldset>
                         </form>
                     </div>
-                    <div className="relative flex h-full min-h-[50vh] mt-2 flex-col rounded-xl bg-background p-4 lg:col-span-2 border">
+                    <div className="relative flex min-h-[80vh] mt-0 sm:mt-2 flex-col rounded-xl bg-background p-4 lg:col-span-2 border">
                         <Badge variant="outline" className="absolute right-3 top-3">
                             Output
                         </Badge>
@@ -291,7 +192,7 @@ const ChatbotPage: React.FC = () => {
                     </div>
                 </main>
             </div>
-        </div>
+        </>
     )
 }
 

@@ -1,3 +1,4 @@
+//app/app/layout.tsx
 import React, { Suspense } from "react";
 
 
@@ -5,17 +6,17 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
     return (
         <div>
-            <main className="relative w-full h-screen flex items-center justify-center">
-                <div className="flex min-h-screen w-full flex-col bg-muted/40">
-                    <Suspense>
+            <main className="relative flex w-full h-screen items-center justify-center overflow-hidden">
+                <div className="flex w-full h-screen flex-col bg-muted/40">
+                    <div className="flex flex-col sm:gap-4 h-screen">
                         {children}
-                    </Suspense>
+                    </div>
                 </div>
             </main>
         </div>
 
 
     );
-};
+}
 
 export default Layout;
