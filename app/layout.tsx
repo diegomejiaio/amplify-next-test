@@ -1,3 +1,4 @@
+//app/layout.tsx
 import './globals.css';
 import type { Metadata } from "next";
 import { Titillium_Web as FontSans } from "next/font/google";

@@ -13,6 +13,7 @@ import Login from '@/app/auth/_components/Login';
 import Auth from '../../../components/Auth';
 import { useState } from 'react';
 import ConfirmPassword from '../_components/ConfirmPassword';
+import { LoadingSpinner } from '@/components/LoadingSpinner';
 
 
 // Set language and configure Amplify
@@ -43,7 +44,7 @@ const LoginForm = () => {
                 <section className="absolute inset-0" style={{ marginTop: "-60px" }}>
                     <SpaceBackground />
                     {/* <Login/> */}
-                    <Suspense fallback={<Skeleton className="w-[480px] h-[420px] rounded-full" />}>
+                    <Suspense fallback={<LoadingSpinner/>}>
                         <Auth/>
                     </Suspense>
                     

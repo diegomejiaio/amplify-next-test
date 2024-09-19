@@ -41,7 +41,7 @@ Amplify.configure(outputs)
 export default function NavbarInternal() {
     const router = useRouter();
     return (
-        <header className="static z-30 flex items-center gap-4 border-0 h-auto bg-transparent px-6">
+        <header className="static z-30 flex items-center gap-4 border-0 h-auto bg-transparent px-6 py-4">
             <Breadcrumb>
                 <BreadcrumbList>
                     <BreadcrumbItem>

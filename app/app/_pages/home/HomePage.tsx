@@ -1,8 +1,9 @@
 // app/app/_pages/Home.tsx
 "use client";
+import { useState, useEffect } from "react";
 import { useToast } from "@/components/ui/use-toast";
-import { generateClient } from 'aws-amplify/data';
-import { type Schema } from '@/amplify/data/resource';
+import { generateClient } from "aws-amplify/data";
+import { type Schema } from "@/amplify/data/resource";
 import React from "react";
 import { Applications, columns } from "./columns";
 import { DataTable } from "./data-table";
@@ -14,12 +15,7 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
-import {
-    Tabs,
-    TabsContent,
-    TabsList,
-    TabsTrigger,
-} from "@/components/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
     DropdownMenu,
     DropdownMenuCheckboxItem,
@@ -32,7 +28,8 @@ import { Button } from "@/components/ui/button";
 import { File, ListFilter, PlusCircle } from "lucide-react";
 import SheetCreateDemo from "./components/SheetCreateDemo";
 import { Toaster } from "@/components/ui/toaster";
-import { getCurrentUser } from 'aws-amplify/auth';
+import { getCurrentUser } from "aws-amplify/auth";
+import App from "next/app";
 
 const client = generateClient<Schema>();
 
@@ -41,53 +38,55 @@ async function getData(): Promise<Applications[]> {
     try {
         const { data: Demo, errors } = await client.models.Demo.list();
         if (errors) {
-            console.error('Error fetching data:', errors);
+            console.error("Error fetching data:", errors);
             return [];
         } else if (!Demo || Demo.length === 0) {
-            console.warn('No data returned from query');
+            console.warn("No data returned from query");
             return [];
         } else {
-            console.log('Data fetched successfully:', Demo);
-            return Demo
-                // fiter isVisible true
-                .filter((item) => item.isVisible === true)
-                .map((item) => ({
-                id: item.demoId,
-                name: item.name,
-                status: item.status || "running",
-                repository: item.repositoryUrl,
-                public_url: item.applicationUrl,
-                version: item.version,
-                cloud: item.cloud,
-                created_at: item.createdAt,
-                description: item.description,
-                owner: item.ownerId,
-            }));
+            console.log("Data fetched successfully:", Demo);
+            return (
+                Demo
+                    // fiter isVisible true
+                    .filter((item) => item.isVisible === true)
+                    .map((item) => ({
+                        id: item.demoId,
+                        name: item.name,
+                        status: item.status || "running",
+                        repository: item.repositoryUrl,
+                        public_url: item.applicationUrl,
+                        version: item.version,
+                        cloud: item.cloud,
+                        created_at: item.createdAt,
+                        description: item.description,
+                        owner: item.ownerId,
+                    }))
+            );
         }
     } catch (error) {
-        console.error('Unexpected error:', error);
+        console.error("Unexpected error:", error);
         return [];
     }
 }
 
 const HomePage: React.FC = () => {
-    const [data, setData] = React.useState<Applications[]>([]);
-    const [isDeleting, setIsDeleting] = React.useState(false);
+    const [dataIsLoading, setDataIsLoadig] = useState(true);
+    const [data, setData] = useState<Applications[]>([]);
     const { toast } = useToast();
+    const [tab, setTab] = useState("active");
 
-    React.useEffect(() => {
+    useEffect(() => {
         const fetchData = async () => {
             const result = await getData();
+            setDataIsLoadig(false);
             setData(result);
         };
         fetchData();
     }, []);
 
     const deleteDemo = async (demoId: string) => {
-        setIsDeleting(true);
         console.log(`Deleting demo with ID: ${demoId}`);
         try {
-            // update is visuble false
             const { data: deletedDemo, errors } = await client.models.Demo.update({
                 demoId: demoId,
                 isVisible: false as boolean,
@@ -104,29 +103,37 @@ const HomePage: React.FC = () => {
                     ),
                 });
             } else {
-                throw new Error("Failed to delete demo");
+                throw new Error("Hubo un error al eliminar la demo");
             }
         } catch (error) {
-            console.error('Error deleting demo:', error);
+            console.error("Error deleting demo:", error);
             toast({
                 title: "Error",
-                description: "Failed to delete the demo. Please try again.",
+                description: "Error la intentar eliminar.",
                 variant: "destructive",
             });
         } finally {
-            setIsDeleting(false);
+            console.log("Delete operation completed");
         }
     };
 
     const undoDelete = async (deletedDemo: any) => {
         try {
-            // update is visuble true
             const { data: updatedDemo, errors } = await client.models.Demo.update({
                 demoId: deletedDemo.demoId,
                 isVisible: true,
             });
+            if (!errors) {
+                setData(data);
+                toast({
+                    title: "Demostración restaurada",
+                    description: "La demostración se ha restaurado correctamente.",
+                });
+            } else {
+                throw new Error("Failed to undo delete");
+            }
         } catch (error) {
-            console.error('Error undoing delete:', error);
+            console.error("Error undoing delete:", error);
         }
     };
 
@@ -147,28 +154,33 @@ const HomePage: React.FC = () => {
                 isVisible: true,
             });
             if (!errors) {
-                setData((prevData) => [...prevData, demo]);
+                const newDemo: Applications = {
+                    id: createdDemo?.demoId ?? "",
+                    name: createdDemo?.name ?? "",
+                    status: createdDemo?.status ?? "running",
+                    repository: createdDemo?.repositoryUrl ?? "",
+                    public_url: createdDemo?.applicationUrl ?? "",
+                    version: createdDemo?.version ?? "",
+                    cloud: createdDemo?.cloud ?? "aws",
+                    created_at: createdDemo?.createdAt ?? "",
+                    description: createdDemo?.description ?? "",
+                };
+                setData((prevData) => [...prevData, newDemo]);
             } else {
                 throw new Error("Failed to create demo");
             }
         } catch (error) {
-            console.error('Error creating demo:', error);
+            console.error("Error creating demo:", error);
         }
-    }
+    };
 
     return (
-        <div className="grid flex-1 max-w-[1200px] witems-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
-            {/* Rest of the component */}
-            <Toaster />
-            <Tabs defaultValue="all">
+        <div className="pr-4 sm:pr-0">
+            <Tabs defaultValue="active">
                 <div className="flex items-center">
                     <TabsList>
-                        <TabsTrigger value="all">Todos</TabsTrigger>
                         <TabsTrigger value="active">Activos</TabsTrigger>
-                        <TabsTrigger value="draft">Draft</TabsTrigger>
-                        <TabsTrigger value="archived" className="hidden sm:flex">
-                            Archivados
-                        </TabsTrigger>
+                        <TabsTrigger value="inactive">Inactivos</TabsTrigger>
                     </TabsList>
                     <div className="ml-auto flex items-center gap-2">
                         <DropdownMenu>
@@ -187,9 +199,7 @@ const HomePage: React.FC = () => {
                                     Activos
                                 </DropdownMenuCheckboxItem>
                                 <DropdownMenuCheckboxItem>Borrador</DropdownMenuCheckboxItem>
-                                <DropdownMenuCheckboxItem>
-                                    Archivados
-                                </DropdownMenuCheckboxItem>
+                                <DropdownMenuCheckboxItem>Archivados</DropdownMenuCheckboxItem>
                             </DropdownMenuContent>
                         </DropdownMenu>
 
@@ -209,16 +219,24 @@ const HomePage: React.FC = () => {
                         </SheetCreateDemo>
                     </div>
                 </div>
-                <TabsContent value="all">
+                <TabsContent value="active">
                     <Card className="border-input">
                         <CardHeader>
-                        <CardTitle>Demos</CardTitle>
+                            <CardTitle>Demostraciones</CardTitle>
                             <CardDescription>
                                 Lista de aplicaciones demo de Tivit Digital Latam.
                             </CardDescription>
                         </CardHeader>
                         <CardContent>
-                            <DataTable columns={columns} data={data} deleteDemo={deleteDemo} />
+                        <div className="overflow-x-auto">
+
+                                <DataTable
+                                    columns={columns}
+                                    data={data}
+                                    deleteDemo={deleteDemo}
+                                    isLoading={dataIsLoading}
+                                />
+                            </div>
                         </CardContent>
                         <CardFooter>
                             <div className="text-xs text-muted-foreground">
@@ -228,6 +246,7 @@ const HomePage: React.FC = () => {
                     </Card>
                 </TabsContent>
             </Tabs>
+            <Toaster />
         </div>
     );
 };
