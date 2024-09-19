@@ -28,6 +28,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { File, ListFilter, PlusCircle } from "lucide-react";
+import { LoadingSpinner } from "@/components/LoadingSpinner";
 
 // Simulación de función para obtener datos
 async function getData(): Promise<Applications[]> {
